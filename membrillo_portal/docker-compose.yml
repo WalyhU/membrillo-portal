@@ -1,0 +1,53 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: membrillo_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: membrillo
+      MYSQL_DATABASE: membrillo_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pmembrillo"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: membrillo_pma
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: membrillo
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "8080:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  app:
+    build: .
+    container_name: membrillo_app
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql+pymysql://root:membrillo@mysql:3306/membrillo_db
+      SECRET_KEY: cambia-esto-en-produccion-membrillo-2026
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    profiles:
+      - full
+    volumes:
+      - ./app/static/facturas:/app/app/static/facturas
+
+volumes:
+  mysql_data:

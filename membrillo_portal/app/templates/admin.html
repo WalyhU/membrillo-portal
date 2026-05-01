@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Stock</h2>
+<p class="text-muted">Ajusta existencias por sucursal. Cambios se reflejan en vivo en el portal via SSE.</p>
+
+<table class="table table-bordered align-middle">
+  <thead class="table-dark">
+    <tr>
+      <th>Producto</th>
+      {% for s in sucursales %}<th class="text-center">{{ s.nombre }}</th>{% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in productos %}
+    <tr>
+      <td><strong>{{ p.nombre }}</strong></td>
+      {% for s in sucursales %}
+      <td>
+        <form method="post" action="/admin/stock" class="d-flex gap-1">
+          <input type="hidden" name="producto_id" value="{{ p.id }}">
+          <input type="hidden" name="sucursal_id" value="{{ s.id }}">
+          <input type="number" name="existencia" value="{{ matriz[p.id][s.id] }}" min="0" class="form-control form-control-sm">
+          <button class="btn btn-sm btn-membrillo">OK</button>
+        </form>
+      </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Tu carrito</h2>
+{% if error %}
+<div class="alert alert-danger">{{ error }}</div>
+{% endif %}
+
+{% if items %}
+<table class="table">
+  <thead><tr><th>Producto</th><th>Cant.</th><th>Precio</th><th>Subtotal</th><th></th></tr></thead>
+  <tbody>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.producto.nombre }}</td>
+      <td>{{ it.cantidad }}</td>
+      <td>Q {{ '%.2f'|format(it.producto.precio) }}</td>
+      <td>Q {{ '%.2f'|format(it.subtotal) }}</td>
+      <td>
+        <form method="post" action="/carrito/quitar">
+          <input type="hidden" name="producto_id" value="{{ it.producto.id }}">
+          <button class="btn btn-sm btn-outline-danger">Quitar</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr><th colspan="3" class="text-end">Subtotal</th><th>Q {{ '%.2f'|format(total) }}</th><th></th></tr>
+    <tr><th colspan="3" class="text-end">IVA (12%)</th><th>Q {{ '%.2f'|format(total*0.12) }}</th><th></th></tr>
+    <tr><th colspan="3" class="text-end fs-5 text-membrillo">TOTAL</th><th class="fs-5 text-membrillo">Q {{ '%.2f'|format(total*1.12) }}</th><th></th></tr>
+  </tfoot>
+</table>
+
+<h3 class="mt-4">Datos de facturacion</h3>
+<form method="post" action="/checkout" class="row g-3">
+  <div class="col-md-6">
+    <label class="form-label">Nombre completo *</label>
+    <input name="nombre" class="form-control" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">NIT</label>
+    <input name="nit" value="CF" class="form-control">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Sucursal de despacho *</label>
+    <select name="sucursal_id" class="form-select" required>
+      {% for s in sucursales %}
+      <option value="{{ s.id }}">{{ s.nombre }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Email</label>
+    <input type="email" name="email" class="form-control">
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Telefono</label>
+    <input name="telefono" class="form-control">
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Direccion</label>
+    <input name="direccion" class="form-control">
+  </div>
+  <div class="col-12">
+    <button class="btn btn-membrillo btn-lg">Confirmar y generar factura</button>
+  </div>
+</form>
+{% else %}
+<div class="alert alert-info">Tu carrito esta vacio. <a href="/">Ver catalogo</a></div>
+{% endif %}
+{% endblock %}

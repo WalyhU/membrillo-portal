@@ -1,0 +1,53 @@
+:root {
+  --membrillo: #8B0000;
+  --membrillo-dark: #5a0000;
+  --membrillo-light: #d4a5a5;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #fafafa;
+}
+
+.bg-membrillo { background-color: var(--membrillo) !important; }
+.bg-membrillo-dark { background-color: var(--membrillo-dark) !important; }
+.text-membrillo { color: var(--membrillo) !important; }
+
+.btn-membrillo {
+  background-color: var(--membrillo);
+  color: white;
+  border: none;
+}
+.btn-membrillo:hover { background-color: var(--membrillo-dark); color: white; }
+
+.brand-emoji {
+  background: white;
+  color: var(--membrillo);
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-right: 6px;
+}
+
+.hero {
+  background: linear-gradient(135deg, var(--membrillo) 0%, var(--membrillo-dark) 100%);
+  color: white;
+}
+
+.product-img {
+  border-bottom: 1px solid #eee;
+  color: var(--membrillo-light);
+  font-weight: bold;
+}
+
+.card { transition: transform .15s ease, box-shadow .15s ease; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.1) !important; }
+
+[data-stock], [data-stock-total] {
+  transition: background-color .4s ease, transform .2s ease;
+}
+.stock-flash {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  transform: scale(1.15);
+}

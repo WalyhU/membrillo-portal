@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="/" class="btn btn-link mb-3"><- Volver al catalogo</a>
+<div class="row g-4">
+  <div class="col-md-5">
+    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height:380px">
+      <span class="display-1">JL</span>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <span class="badge bg-secondary mb-2">{{ producto.tipo.nombre }}</span>
+    <h2>{{ producto.nombre }}</h2>
+    <p class="text-muted">{{ producto.descripcion }}</p>
+    <h3 class="text-membrillo mb-3">Q {{ '%.2f'|format(producto.precio) }}</h3>
+    <h5>Stock total: <span class="badge bg-success" data-stock-total="{{ producto.id }}">{{ stock_total }}</span></h5>
+
+    <h6 class="mt-4">Existencias por sucursal (en vivo):</h6>
+    <table class="table table-sm">
+      <thead><tr><th>Sucursal</th><th class="text-end">Existencia</th></tr></thead>
+      <tbody>
+        {% for s in stock %}
+        <tr>
+          <td>{{ s.sucursal_nombre }}</td>
+          <td class="text-end">
+            <span class="badge bg-primary" data-stock="{{ producto.id }}-{{ s.sucursal_id }}">{{ s.existencia }}</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <form method="post" action="/carrito/agregar" class="mt-4 d-flex gap-2">
+      <input type="hidden" name="producto_id" value="{{ producto.id }}">
+      <input type="number" name="cantidad" value="1" min="1" class="form-control" style="max-width:100px">
+      <button class="btn btn-membrillo">Agregar al carrito</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

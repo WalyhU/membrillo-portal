@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center py-5">
+  <div class="display-1 text-success">OK</div>
+  <h2 class="mt-3">Factura generada</h2>
+  <p class="lead">No. <strong>{{ '%06d'|format(factura.id) }}</strong> - Total <strong>Q {{ '%.2f'|format(factura.total) }}</strong></p>
+  <p>Sucursal de despacho: <strong>{{ factura.sucursal.nombre }}</strong></p>
+  <a class="btn btn-membrillo btn-lg" href="{{ pdf_url }}" target="_blank">Descargar PDF</a>
+  <a class="btn btn-outline-secondary btn-lg ms-2" href="/">Seguir comprando</a>
+</div>
+{% endblock %}
