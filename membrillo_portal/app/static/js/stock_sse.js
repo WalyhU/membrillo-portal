@@ -8,9 +8,8 @@
 
   es.addEventListener("ready", () => {
     if (statusBadge) {
-      statusBadge.textContent = "Stock en vivo conectado";
-      statusBadge.classList.remove("bg-warning");
-      statusBadge.classList.add("bg-success");
+      statusBadge.innerHTML = '<span class="d-inline-block bg-success rounded-circle me-2" style="width:8px; height:8px;"></span> Stock en vivo conectado';
+      statusBadge.style.background = "rgba(255,255,255,0.2)";
     }
   });
 
@@ -26,8 +25,14 @@
       // Stock total
       const total = document.querySelectorAll(`[data-stock-total="${data.producto_id}"]`);
       total.forEach((el) => {
-        const txt = el.textContent.includes(":") ? `Stock: ${data.stock_total}` : data.stock_total;
-        el.textContent = txt;
+        // Detectar si el texto tiene formato "Stock: N" o solo "N unidades"
+        if (el.textContent.includes("unidades")) {
+            el.textContent = `${data.stock_total} unidades`;
+        } else if (el.textContent.includes(":")) {
+            el.textContent = `Stock: ${data.stock_total}`;
+        } else {
+            el.textContent = data.stock_total;
+        }
         flash(el);
       });
     } catch (e) {
@@ -37,9 +42,8 @@
 
   es.addEventListener("error", () => {
     if (statusBadge) {
-      statusBadge.textContent = "Stock en vivo desconectado";
-      statusBadge.classList.remove("bg-success");
-      statusBadge.classList.add("bg-danger");
+      statusBadge.innerHTML = '<span class="d-inline-block bg-danger rounded-circle me-2" style="width:8px; height:8px;"></span> Stock en vivo desconectado';
+      statusBadge.style.background = "rgba(220, 53, 69, 0.1)";
     }
   });
 

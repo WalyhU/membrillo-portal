@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh auth *)",
+      "Bash(git config *)",
+      "PowerShell(gh *)",
+      "PowerShell(winget *)",
+      "mcp__github__get_me",
+      "mcp__github__create_repository",
+      "mcp__github__push_files",
+      "PowerShell(git *)",
+      "mcp__stitch__create_project",
+      "mcp__stitch__generate_screen_from_text",
+      "mcp__stitch__list_screens"
+    ]
+  }
+}

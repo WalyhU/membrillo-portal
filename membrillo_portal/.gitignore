@@ -5,3 +5,7 @@ __pycache__/
 app/static/facturas/*.pdf
 !app/static/facturas/.gitkeep
 mysql_data/
+Presentacion_ElMembrillo.pptx
+PROMPT_PPTX_ElMembrillo.md
+stitch_design_system_implementation/
+stitch_prompt.md

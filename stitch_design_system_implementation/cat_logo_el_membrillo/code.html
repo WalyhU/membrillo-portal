@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#5a403c",
+                        "text-muted": "#6B5B4F",
+                        "secondary-fixed": "#ffdcbc",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#efbd8a",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#3d2c2a",
+                        "primary-container": "#8b0000",
+                        "bg-cream": "#FAF6F0",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#fecb97",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#614018",
+                        "inverse-on-surface": "#ffedea",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#0025c8",
+                        "outline-variant": "#e3beb8",
+                        "on-tertiary-container": "#9ea9ff",
+                        "surface-container-high": "#fee2dd",
+                        "on-surface": "#261816",
+                        "on-secondary-fixed": "#2c1700",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#00178d",
+                        "surface-container-low": "#fff0ee",
+                        "warning-amber": "#FFA726",
+                        "on-primary-container": "#ff907f",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#ffe9e6",
+                        "on-background": "#261816",
+                        "primary-hover": "#6B0000",
+                        "on-tertiary-fixed-variant": "#0d2ccc",
+                        "tertiary-fixed": "#dfe0ff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#920703",
+                        "outline": "#8e706b",
+                        "tertiary-fixed-dim": "#bcc3ff",
+                        "primary": "#610000",
+                        "error-red": "#E53935",
+                        "secondary": "#7c572d",
+                        "success-green": "#4CAF50",
+                        "background": "#fff8f6",
+                        "surface": "#fff8f6",
+                        "on-secondary-container": "#79542a",
+                        "inverse-primary": "#ffb4a8",
+                        "surface-dim": "#efd4d0",
+                        "surface-bright": "#fff8f6",
+                        "surface-variant": "#f8dcd8",
+                        "surface-tint": "#b52619",
+                        "surface-container-highest": "#f8dcd8",
+                        "primary-fixed": "#ffdad4",
+                        "on-tertiary-fixed": "#000d60",
+                        "text-dark": "#2C1810",
+                        "card-cream": "#F5E6D3",
+                        "on-primary-fixed": "#410000"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Playfair Display"],
+                        "eyebrow": ["Inter"],
+                        "price-lg": ["Playfair Display"],
+                        "display-hero": ["Playfair Display"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(139,0,0,0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bg-cream font-body-md text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-[#FAF6F0]/70 glass-nav border-b border-[#8B0000]/10 shadow-[0_4px_20px_rgba(139,0,0,0.08)]">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#8B0000]" data-icon="menu">menu</span>
+<span class="text-2xl font-headline-md font-bold text-[#8B0000]">El Membrillo</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#8B0000]" data-icon="sanitizer">sanitizer</span>
+<span class="material-symbols-outlined text-[#8B0000]" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</div>
+</nav>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="px-6 py-12 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-white/80 border border-secondary-container rounded-full mb-6 soft-shadow">
+<span class="w-2 h-2 rounded-full bg-success-green animate-pulse"></span>
+<span class="text-eyebrow font-eyebrow text-secondary uppercase tracking-widest">Stock en vivo</span>
+</div>
+<h1 class="text-display-hero font-headline-lg text-primary mb-6 leading-tight">Sabor que cuenta historias</h1>
+<p class="text-body-lg font-body-lg text-text-muted mb-8 max-w-md">Desde 1962, preservando la tradición artesanal en cada frasco de jalea y mermelada boutique.</p>
+<div class="flex gap-4">
+<button class="bg-[#8B0000] text-white px-8 py-4 rounded-lg font-bold shadow-lg active:scale-95 transition-transform">
+                    Ver Catálogo
+                </button>
+<button class="bg-card-cream text-primary px-6 py-4 rounded-lg font-bold border border-primary/10">
+                    Nuestra Historia
+                </button>
+</div>
+</section>
+<!-- Sticky Filters -->
+<div class="sticky top-[72px] z-40 bg-bg-cream/90 glass-nav py-4 px-6 border-b border-primary/5 mb-8">
+<div class="flex flex-col gap-4">
+<div class="flex overflow-x-auto gap-3 pb-2 no-scrollbar">
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-[#8B0000] text-white text-sm font-semibold">Todos</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-white text-text-muted text-sm font-semibold border border-primary/5">Jaleas</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-white text-text-muted text-sm font-semibold border border-primary/5">Mermeladas</button>
+<button class="whitespace-nowrap px-6 py-2 rounded-full bg-white text-text-muted text-sm font-semibold border border-primary/5">Artesanías</button>
+</div>
+<div class="flex items-center gap-2 text-primary font-semibold text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span>Sucursal: Central Valle</span>
+<span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Product Grid -->
+<section class="px-6 grid grid-cols-2 gap-4">
+<!-- Product 1 -->
+<div class="bg-card-cream rounded-xl p-3 flex flex-col soft-shadow relative">
+<div class="absolute top-2 right-2 z-10">
+<span class="bg-primary text-white text-[10px] px-2 py-1 rounded font-bold uppercase tracking-tighter">Nuevo</span>
+</div>
+<div class="bg-white rounded-lg aspect-square mb-3 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium artisanal glass jar of quince jelly with a minimalist wine-colored label, sitting on a rustic wooden table illuminated by soft, golden morning sunlight. The background is a blurred farm-to-table boutique setting with cream-colored walls and warm textures. The aesthetic is rural-premium with a focus on handcrafted quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqn-tl_tCCVAko_L733fm7deau8-g1_ZHTCBJ-AWyTUC1uZGWFJOPpvg3FF7WpDB1ZgH0SNL8s6n_0rp9CAU4Tq8WtyKtsfjU3QjIIoyOZ8jlrO5Z-un2DhOMCOyFLjT4UdL4n-HGAEUy0jiw1Qcuqsm8WsoauFZT1bhdFDoJ9T4RZG0hTipQwYcinQMrVC7XzKD7h84GyHNgpG-xGVtd10cr61mxa6tA5b2E_MtMcZWo1Uvef5Usc9r953b6J80TEiJbSgEbaYZc"/>
+</div>
+<h3 class="font-headline-md text-sm text-text-dark mb-1">Jalea de Membrillo Real</h3>
+<p class="text-price-lg text-primary text-lg mb-2">$4.500</p>
+<div class="bg-white/50 rounded p-2 mb-3">
+<div class="flex justify-between text-[10px] text-text-muted mb-1 font-bold">
+<span>SUCURSAL</span>
+<span>STOCK</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span>Valle</span>
+<span class="text-success-green font-bold">● 12</span>
+</div>
+<div class="flex justify-between text-[9px]">
+<span>Centro</span>
+<span class="text-warning-amber font-bold">● 3</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-[#8B0000] text-white py-2 rounded-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="text-xs font-bold">Agregar</span>
+</button>
+</div>
+<!-- Product 2 -->
+<div class="bg-card-cream rounded-xl p-3 flex flex-col soft-shadow relative opacity-90">
+<div class="absolute top-2 right-2 z-10">
+<span class="bg-stone-500 text-white text-[10px] px-2 py-1 rounded font-bold uppercase tracking-tighter">Agotado</span>
+</div>
+<div class="bg-white rounded-lg aspect-square mb-3 overflow-hidden grayscale">
+<img class="w-full h-full object-cover" data-alt="An artisanal jar of orange marmalade with visible citrus peels, captured in a high-end boutique style. The lighting is soft and ambient, reflecting off the glass surface. The setting is a clean, minimalist kitchen with neutral cream tones and wine-colored accents. Professional product photography for a luxury gourmet brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbI3VREXB6Q2aqcmt0GK11L9Kfb16ECCYDXcYdWi7I3C9XRSirOedCji1C9EVrdn4wPPdV4tzppTFWUMzwVDoZuegvum193yuVXtU1wwXUPdyGEaVikuy57dEB3HINf30lSUqxkkrHPclC4AGZieFhmGWFhdmpvJ0v4qbb8momMSQj1kzJJCjalBgcjR1Rz403SejUgSFIE9OcTVx9VgcDzIHRv57ddzqDFNf7hCHzNPMjY_eJAhae5qe7AYG4qELthtfha5gCAkY"/>
+</div>
+<h3 class="font-headline-md text-sm text-text-dark mb-1">Mermelada de Naranja Amarga</h3>
+<p class="text-price-lg text-primary text-lg mb-2">$3.800</p>
+<div class="bg-white/50 rounded p-2 mb-3">
+<div class="flex justify-between text-[10px] text-text-muted mb-1 font-bold">
+<span>SUCURSAL</span>
+<span>STOCK</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span>Valle</span>
+<span class="text-error-red font-bold">● 0</span>
+</div>
+<div class="flex justify-between text-[9px]">
+<span>Centro</span>
+<span class="text-error-red font-bold">● 0</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-stone-300 text-stone-600 py-2 rounded-lg flex items-center justify-center gap-2 cursor-not-allowed">
+<span class="material-symbols-outlined text-sm" data-icon="notifications">notifications</span>
+<span class="text-xs font-bold">Avisarme</span>
+</button>
+</div>
+<!-- Product 3 -->
+<div class="bg-card-cream rounded-xl p-3 flex flex-col soft-shadow relative">
+<div class="bg-white rounded-lg aspect-square mb-3 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A boutique collection of small honey and jam jars arranged artistically on a cream marble surface. The lighting is high-key and bright, evoking a fresh and modern morning vibe. The color palette features rich ambers, deep reds, and soft creams. The composition is clean and premium, emphasizing the artisanal nature of the products." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm7ofqdeip5LAaaXUIxqYpDpT6c4n0eEurWe3OZMhiERLkuBj7MoVM5hH_E6966GK1Tkw9s0l3XKEMcqnVqpVXpWVYtu0QoNO84yB-o0UfMI9XZ3FsK3qUTEg_i7yYG1bkAABTlejazZ7Zs8cliIK3EAvffTF_UYvO90XiYdu7E0hLuSxrUBQxb8eAY6ae7SJVQmpGN3C1ImwAGmSE4UONudU-mwVS2TX9J4p3nKRr8brBnVM50RAbpbAJE9zWI3Clpn5CCJ1Aauw"/>
+</div>
+<h3 class="font-headline-md text-sm text-text-dark mb-1">Dúo de Jaleas Especiales</h3>
+<p class="text-price-lg text-primary text-lg mb-2">$8.200</p>
+<div class="bg-white/50 rounded p-2 mb-3">
+<div class="flex justify-between text-[10px] text-text-muted mb-1 font-bold">
+<span>SUCURSAL</span>
+<span>STOCK</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span>Valle</span>
+<span class="text-success-green font-bold">● 8</span>
+</div>
+<div class="flex justify-between text-[9px]">
+<span>Centro</span>
+<span class="text-success-green font-bold">● 5</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-[#8B0000] text-white py-2 rounded-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="text-xs font-bold">Agregar</span>
+</button>
+</div>
+<!-- Product 4 -->
+<div class="bg-card-cream rounded-xl p-3 flex flex-col soft-shadow relative">
+<div class="bg-white rounded-lg aspect-square mb-3 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up of a traditional fruit preserve jar with a fabric cover and twine, sitting in a cozy, rustic kitchen setting. The environment feels warm and inviting, with soft natural light streaming through a window. The styling is elegant and timeless, highlighting the brand's heritage since 1962. Deep wine and cream color accents are prominent." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRLJ72uWofLDNmaW1_5n2qoC5whLDYMMG0UfX5yta9qzIgbHYsqQlj2RZj0jcA34HRtTStteZP9fpLJhBXVvBO6BR79T3V2zn3st-wwgZilUcg-TDfUDNmylISu8Vzb5WCWdzrfFQdCNqUIdcpKzGrDc8QiRW3y0s9Fnrv9HeMYDYCqOqBdF4SJZe_ckOcgmKNZT7Nw8ceng2ti4vNJvYzMB7Asjn93SOceJ9Z3l3H_L4jMDgAH4fmW7bXm9GGfdsKIY533_29mbs"/>
+</div>
+<h3 class="font-headline-md text-sm text-text-dark mb-1">Membrillo en Barra 500g</h3>
+<p class="text-price-lg text-primary text-lg mb-2">$5.900</p>
+<div class="bg-white/50 rounded p-2 mb-3">
+<div class="flex justify-between text-[10px] text-text-muted mb-1 font-bold">
+<span>SUCURSAL</span>
+<span>STOCK</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span>Valle</span>
+<span class="text-warning-amber font-bold">● 2</span>
+</div>
+<div class="flex justify-between text-[9px]">
+<span>Centro</span>
+<span class="text-success-green font-bold">● 24</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-[#8B0000] text-white py-2 rounded-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="text-xs font-bold">Agregar</span>
+</button>
+</div>
+</section>
+<!-- Nuestra Historia Section -->
+<section class="mt-20 px-6 py-16 bg-white soft-shadow">
+<h2 class="text-headline-lg font-headline-lg text-primary mb-6 italic">Nuestra historia</h2>
+<div class="flex flex-col gap-6">
+<div class="rounded-2xl overflow-hidden aspect-[4/3]">
+<img class="w-full h-full object-cover" data-alt="Vintage photograph-style image of a family kitchen from the 1960s, showing traditional jam making tools and copper pots. The lighting is warm and nostalgic with amber tones. The scene conveys trust, heritage, and the artisanal beginnings of the brand. Soft grain and high-quality artistic photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJf8t_2CPvnmNamF1J3URon1yQqVHmR05v7WoriO3vhzJ0gRY7Ki-lYz1hpOedMAEXCxre_6_mJZAg_I0lppu5K1ye9LkeoE1iMlNwoErvshPaWR_hcWnxodyFKccvRZEGwHl6lVVu2y_MwMAg8asKFBEtLs70_e8HlCfClaqtCTO2PySNUW_AtSr1KOQD6EdplaWeNu8pDVwd2uvdZEYzipDaftvBF6ihbi_XDEJ-YxKiL9wyil6nOdcAg12vS0d97xWkHFduwTQ"/>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">
+                    Nacimos en 1962 con una receta familiar y un sueño: capturar la esencia de la fruta en su punto máximo de madurez. Hoy, mantenemos los mismos procesos lentos y cuidadosos que nos dieron origen.
+                </p>
+<div class="border-l-4 border-primary pl-4 py-2 italic text-text-muted">
+                    "Cada frasco es un viaje al corazón de nuestra tierra."
+                </div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-stone-900 text-white pt-16 pb-12">
+<div class="px-8 flex flex-col gap-12">
+<div>
+<span class="font-headline-md text-3xl text-red-500 block mb-4">El Membrillo</span>
+<p class="text-stone-400 font-serif text-sm italic mb-8 max-w-xs">Artesanía en Jaleas desde 1962. Calidad premium para paladares exigentes.</p>
+<div class="grid grid-cols-2 gap-8 mb-12">
+<ul class="space-y-4">
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Historia</a></li>
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Sustentabilidad</a></li>
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Puntos de Venta</a></li>
+</ul>
+<ul class="space-y-4">
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Contacto</a></li>
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Términos</a></li>
+<li><a class="text-xs text-stone-300 hover:text-red-500 transition-colors uppercase tracking-widest" href="#">Privacidad</a></li>
+</ul>
+</div>
+</div>
+<div>
+<h4 class="text-sm font-bold text-red-500 uppercase tracking-widest mb-4">Encuéntranos</h4>
+<div class="w-full h-48 rounded-xl overflow-hidden bg-stone-800">
+<img class="w-full h-full object-cover opacity-50" data-alt="An artistic, stylized map showing the locations of El Membrillo boutiques across a scenic valley region. The map uses a sophisticated color palette of creams, golds, and deep wine reds. Minimalist icons mark the shop locations, blending modern digital design with a handcrafted, vintage-cartography aesthetic." data-location="Chile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIVVe4-RRQsbriB2cw52x6vB6licOw8-lyMZ-7z5Khz5HqBjU_Q9GTnKHios3cOtXKNgxr7u40q9ARUPRXd2AkuPTQ9hROb4cEi6m1M8mvG_ChvPGT1uq7OX8dBlbnlm_Dc8rGb1yEDdBknQ00ZzzWAyK8gML1DRC5cqgb9V8QLr5-hYTsqOp5wP9m27j3369Nh1plMGGDuZiV84ZkctMJ7SRieDFYcn5j6_3cWeFz5ozjinJQ3Jy_6gEnLxzBXu53VlKZ-NCgCsI"/>
+</div>
+<div class="mt-4 flex gap-4 overflow-x-auto pb-4">
+<div class="min-w-[200px] p-3 bg-stone-800 rounded-lg">
+<p class="text-xs font-bold mb-1">Sucursal Valle</p>
+<p class="text-[10px] text-stone-400">Camino al Monte 452, Colina</p>
+</div>
+<div class="min-w-[200px] p-3 bg-stone-800 rounded-lg">
+<p class="text-xs font-bold mb-1">Boutique Centro</p>
+<p class="text-[10px] text-stone-400">Av. Vitacura 2240, Local 5</p>
+</div>
+</div>
+</div>
+<div class="border-t border-stone-800 pt-8 text-center">
+<p class="text-[10px] text-stone-500 uppercase tracking-widest">© 1962-2024 El Membrillo S.A. Artesanía en Jaleas.</p>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-[#FAF6F0] border-t border-[#D4A574]/20 shadow-[0_-4px_20px_rgba(139,0,0,0.05)] rounded-t-3xl md:hidden">
+<div class="flex justify-around items-center px-4 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-[#8B0000] font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Inicio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="local_mall">local_mall</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Tienda</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Carrito</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Perfil</span>
+</a>
+</div>
+</nav>
+</body></html>
