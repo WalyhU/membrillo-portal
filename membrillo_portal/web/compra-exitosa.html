@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¡Gracias por tu compra! · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen">
+<main class="max-w-2xl mx-auto px-5 py-14 text-center">
+  <div class="relative w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+    <div class="ring-expand absolute inset-0 rounded-full"></div>
+    <div class="pop-in w-24 h-24 rounded-full bg-success-green/15 flex items-center justify-center"><span class="material-symbols-outlined ms-fill text-success-green" style="font-size:56px">check_circle</span></div>
+  </div>
+  <h1 class="font-display text-4xl text-text-dark mb-2">¡Gracias por tu compra!</h1>
+  <p class="text-text-muted" id="sub">Tu factura está lista.</p>
+
+  <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6 mt-8 text-left" id="card"></div>
+
+  <div class="flex flex-col sm:flex-row justify-center gap-3 mt-8">
+    <a id="pdfBtn" href="#" target="_blank" class="btn-primary ripple flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold"><span class="material-symbols-outlined">download</span> Descargar factura PDF</a>
+    <a href="index.html" class="flex items-center justify-center gap-2 border border-primary text-primary hover:bg-primary/5 px-6 py-3 rounded-xl font-semibold">Volver al catálogo</a>
+  </div>
+
+  <div class="mt-12 text-left">
+    <h2 class="font-display text-xl text-center mb-6">¿Qué sigue?</h2>
+    <ol class="grid sm:grid-cols-3 gap-4">
+      <li class="bg-card-cream/50 rounded-2xl p-4 text-center"><span class="material-symbols-outlined text-3xl text-primary">mail</span><div class="font-semibold mt-2">1. Confirmación</div><p class="text-sm text-text-muted">Recibirás el detalle.</p></li>
+      <li class="bg-card-cream/50 rounded-2xl p-4 text-center"><span class="material-symbols-outlined text-3xl text-primary">storefront</span><div class="font-semibold mt-2">2. Retira</div><p class="text-sm text-text-muted">Pasa por tu sucursal.</p></li>
+      <li class="bg-card-cream/50 rounded-2xl p-4 text-center"><span class="material-symbols-outlined text-3xl text-primary">redeem</span><div class="font-semibold mt-2">3. Disfruta</div><p class="text-sm text-text-muted">Saborea la tradición.</p></li>
+    </ol>
+  </div>
+</main>
+<script src="assets/membrillo.js"></script>
+<script src="assets/api.js"></script>
+<script>
+(async function () {
+  const id = parseInt(new URLSearchParams(location.search).get("factura"), 10);
+  if (!id) { document.getElementById("card").textContent = "Factura no especificada."; return; }
+  let f;
+  try { f = await Mem.apiFetch("/facturas/" + id); } catch (e) { document.getElementById("card").innerHTML = '<p class="text-error-red">No se encontró la factura.</p>'; return; }
+  const num = "#" + String(f.id).padStart(6, "0");
+  document.getElementById("sub").innerHTML = 'Tu factura <strong>' + num + '</strong> está lista.';
+  document.getElementById("pdfBtn").href = Mem.API + "/facturas/" + id + "/pdf";
+  document.getElementById("card").innerHTML =
+    '<div class="flex justify-between py-2 border-b border-outline-variant/20"><span class="text-text-muted">Número</span><span class="font-semibold">' + num + '</span></div>' +
+    '<div class="flex justify-between py-2 border-b border-outline-variant/20"><span class="text-text-muted">Estado</span><span class="badge badge-paid capitalize">' + f.estado + '</span></div>' +
+    '<div class="flex justify-between py-2 border-b border-outline-variant/20"><span class="text-text-muted">Sucursal de retiro</span><span class="font-semibold">' + (f.sucursal ? f.sucursal.nombre : "—") + '</span></div>' +
+    '<div class="flex justify-between py-2"><span class="text-text-muted">Total</span><span class="font-display text-xl font-bold text-primary">' + Mem.money(f.total) + '</span></div>';
+  if (window.membrilloConfetti) window.membrilloConfetti({ count: 150 });
+})();
+</script>
+</body>
+</html>

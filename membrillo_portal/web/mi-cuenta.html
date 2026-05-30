@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi cuenta · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen">
+
+<header class="sticky top-0 z-30 glass-nav bg-primary/95 text-white">
+  <div class="max-w-container mx-auto px-5 md:px-8 h-16 flex items-center gap-5">
+    <a href="index.html" class="flex items-center gap-2 font-display text-xl"><span class="material-symbols-outlined text-gold ms-fill">local_florist</span> El Membrillo</a>
+    <nav class="ml-auto flex items-center gap-4 text-sm">
+      <a href="index.html" class="hover:text-gold">Catálogo</a>
+      <a href="#" id="logoutBtn" class="hover:text-gold">Salir</a>
+      <a href="carrito.html" class="relative flex items-center gap-2 bg-white/10 rounded-full px-4 py-2"><span class="material-symbols-outlined" style="font-size:20px">shopping_cart</span><span data-cart-count class="bg-gold text-sidebar font-bold text-xs rounded-full px-2 py-0.5">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-container mx-auto px-5 md:px-8 py-10 max-w-4xl">
+  <div class="flex items-center gap-3 mb-8">
+    <div class="w-14 h-14 rounded-full bg-gold/90 flex items-center justify-center text-sidebar font-bold text-lg" id="avatar">··</div>
+    <div><h1 class="font-display text-3xl" id="hola">Hola</h1><p class="text-text-muted text-sm" id="correo"></p></div>
+  </div>
+
+  <h2 class="font-display text-xl mb-4">Mis pedidos</h2>
+  <div id="lista" class="space-y-3"></div>
+  <div id="vacio" class="hidden text-center py-16 bg-white rounded-2xl border border-outline-variant/30">
+    <span class="material-symbols-outlined text-primary/25" style="font-size:64px">shopping_bag</span>
+    <p class="text-text-muted mt-3">Aún no tienes pedidos.</p>
+    <a href="index.html" class="inline-flex items-center gap-2 mt-4 btn-primary rounded-xl px-6 py-3 font-semibold">Explorar catálogo</a>
+  </div>
+</main>
+
+<script src="assets/membrillo.js"></script>
+<script src="assets/api.js"></script>
+<script>
+(async function () {
+  if (!Mem.requireAuth()) return;
+  const u = Mem.getUser();
+  document.getElementById("hola").textContent = "Hola, " + u.nombre.split(" ")[0];
+  document.getElementById("correo").textContent = u.email;
+  document.getElementById("avatar").textContent = u.nombre.split(" ").map((x) => x[0]).join("").slice(0, 2).toUpperCase();
+  document.getElementById("logoutBtn").onclick = (e) => { e.preventDefault(); Mem.logout("index.html"); };
+
+  const lista = document.getElementById("lista");
+  let facturas = [];
+  try { facturas = await Mem.apiFetch("/mis-facturas"); }
+  catch (e) { if (e.status === 401) return Mem.logout("login.html"); lista.innerHTML = '<p class="text-error-red">No se pudo cargar.</p>'; return; }
+  if (!facturas.length) { document.getElementById("vacio").classList.remove("hidden"); return; }
+
+  const badge = (e) => e === "pagada" ? "badge-paid" : e === "pendiente" ? "badge-pending" : "badge-void";
+  lista.innerHTML = facturas.map((f) =>
+    '<div class="flex items-center gap-4 bg-white rounded-2xl border border-outline-variant/30 soft-shadow p-4">' +
+      '<div class="w-12 h-12 rounded-xl bg-card-cream flex items-center justify-center text-primary"><span class="material-symbols-outlined">receipt_long</span></div>' +
+      '<div class="flex-1"><div class="font-semibold">Factura #' + String(f.id).padStart(6, "0") + '</div>' +
+        '<div class="text-sm text-text-muted">' + (f.fecha ? new Date(f.fecha).toLocaleDateString("es-GT") : "") + ' · ' + (f.sucursal ? f.sucursal.nombre : "") + '</div></div>' +
+      '<span class="badge ' + badge(f.estado) + ' capitalize">' + f.estado + '</span>' +
+      '<div class="font-display text-lg font-bold text-primary">' + Mem.money(f.total) + '</div>' +
+      (f.estado === "pagada" ? '<a href="' + Mem.API + '/facturas/' + f.id + '/pdf" target="_blank" class="text-primary" title="PDF"><span class="material-symbols-outlined">download</span></a>'
+        : f.estado === "pendiente" ? '<a href="pago.html?factura=' + f.id + '" class="text-warning-amber" title="Pagar"><span class="material-symbols-outlined">credit_card</span></a>' : '<span class="w-6"></span>') +
+    '</div>').join("");
+})();
+</script>
+</body>
+</html>

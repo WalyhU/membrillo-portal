@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Crear cuenta · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen">
+
+<div class="min-h-screen lg:grid lg:grid-cols-[1fr_1.05fr]">
+
+  <!-- Panel formulario -->
+  <main class="flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-16 order-2 lg:order-1">
+    <div class="w-full max-w-[440px] mx-auto">
+
+      <div class="lg:hidden flex items-center gap-3 mb-8">
+        <div class="w-11 h-11 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-gold ms-fill">local_florist</span>
+        </div>
+        <div>
+          <p class="font-display text-xl leading-none text-primary">El Membrillo</p>
+          <p class="eyebrow text-text-muted mt-1" style="font-size:9px">Jaleas Artesanales · 1962</p>
+        </div>
+      </div>
+
+      <span class="eyebrow text-primary">Únete a la familia</span>
+      <h2 class="font-display text-4xl text-text-dark mt-2 mb-2">Crea tu cuenta</h2>
+      <p class="text-text-muted mb-7">¿Ya eres parte? <a href="login.html" class="text-primary font-semibold hover:text-primary-hover underline decoration-gold/60 underline-offset-2">Inicia sesión</a></p>
+
+      <form id="regForm" novalidate class="space-y-4">
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5 ml-1">Nombre completo</label>
+          <input id="nombre" type="text" placeholder="Ej. María Fernanda García" class="field" data-rule="required"/>
+          <p class="hint text-xs mt-1 ml-1 hidden"></p>
+        </div>
+
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5 ml-1">Correo electrónico</label>
+          <input id="email" type="email" placeholder="tu@correo.com" class="field" data-rule="email"/>
+          <p class="hint text-xs mt-1 ml-1 hidden"></p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block eyebrow text-text-muted mb-1.5 ml-1">NIT <span class="normal-case tracking-normal text-[10px] text-text-muted/70">(opcional)</span></label>
+            <input id="nit" type="text" placeholder="1234567-0" class="field"/>
+          </div>
+          <div>
+            <label class="block eyebrow text-text-muted mb-1.5 ml-1">Teléfono</label>
+            <input id="tel" type="tel" placeholder="+502 0000 0000" class="field" data-rule="required"/>
+          </div>
+        </div>
+
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5 ml-1">Contraseña</label>
+          <div class="relative">
+            <input id="password" type="password" placeholder="Mínimo 6 caracteres" class="field pr-11" data-rule="pw"/>
+            <button type="button" id="togglePw" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary p-1">
+              <span class="material-symbols-outlined" style="font-size:20px">visibility</span>
+            </button>
+          </div>
+          <!-- Medidor de fuerza -->
+          <div class="flex items-center gap-2 mt-2 ml-1">
+            <div class="flex-1 grid grid-cols-4 gap-1">
+              <span class="pwbar h-1 rounded-full bg-outline-variant/40"></span>
+              <span class="pwbar h-1 rounded-full bg-outline-variant/40"></span>
+              <span class="pwbar h-1 rounded-full bg-outline-variant/40"></span>
+              <span class="pwbar h-1 rounded-full bg-outline-variant/40"></span>
+            </div>
+            <span id="pwLabel" class="text-[11px] text-text-muted w-16 text-right">—</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5 ml-1">Confirmar contraseña</label>
+          <input id="password2" type="password" placeholder="Repite tu contraseña" class="field" data-rule="pw2"/>
+          <p class="hint text-xs mt-1 ml-1 hidden"></p>
+        </div>
+
+        <label class="flex items-start gap-2.5 cursor-pointer select-none pt-1">
+          <input type="checkbox" id="terms" class="w-4 h-4 mt-0.5 rounded border-outline-variant text-primary focus:ring-primary/30"/>
+          <span class="text-sm text-text-muted">Acepto los <a href="#" class="text-primary underline">Términos de servicio</a> y la <a href="#" class="text-primary underline">Política de privacidad</a>.</span>
+        </label>
+
+        <button type="submit" id="submitBtn" class="btn-primary ripple w-full py-3.5 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2 disabled:opacity-60">
+          <span class="btn-label">Crear cuenta</span>
+          <span class="material-symbols-outlined btn-label" style="font-size:19px">arrow_forward</span>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Panel ilustración -->
+  <aside class="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden cc-gradient text-white order-1 lg:order-2">
+    <div class="absolute -top-20 -left-24 w-96 h-96 rounded-full bg-white/5 blur-2xl"></div>
+    <div class="absolute bottom-0 -right-16 w-80 h-80 rounded-full bg-black/20 blur-2xl"></div>
+
+    <div class="relative flex items-center justify-end gap-3">
+      <div class="text-right">
+        <p class="font-display text-2xl leading-none">El Membrillo</p>
+        <p class="eyebrow text-gold/90 mt-1" style="font-size:10px">Desde 1962</p>
+      </div>
+      <div class="w-11 h-11 rounded-xl bg-white/12 backdrop-blur flex items-center justify-center">
+        <span class="material-symbols-outlined text-gold ms-fill">local_florist</span>
+      </div>
+    </div>
+
+    <div class="relative max-w-md ml-auto text-right">
+      <h1 class="font-display text-5xl leading-[1.05] mb-5">Tu mesa, con<br/>sabor de tradición.</h1>
+      <p class="text-white/75 text-lg leading-relaxed">Crea tu cuenta y disfruta reservas de stock, retiro en 24h y facturación electrónica en cualquiera de nuestras 6 sucursales.</p>
+    </div>
+
+    <ul class="relative space-y-3 ml-auto text-right">
+      <li class="flex items-center justify-end gap-3 text-white/85"><span>Reserva tu frasco antes de que se agote</span><span class="material-symbols-outlined text-gold" style="font-size:20px">verified</span></li>
+      <li class="flex items-center justify-end gap-3 text-white/85"><span>Historial de pedidos y facturas PDF</span><span class="material-symbols-outlined text-gold" style="font-size:20px">verified</span></li>
+      <li class="flex items-center justify-end gap-3 text-white/85"><span>Stock en vivo de las 6 sucursales</span><span class="material-symbols-outlined text-gold" style="font-size:20px">verified</span></li>
+    </ul>
+  </aside>
+</div>
+
+<script src="assets/membrillo.js"></script>
+<script>
+  const pw = document.getElementById("password");
+  document.getElementById("togglePw").addEventListener("click", function () {
+    const show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    this.querySelector("span").textContent = show ? "visibility_off" : "visibility";
+  });
+
+  function setHint(input, msg, ok) {
+    const hint = input.parentElement.parentElement.querySelector(".hint") || input.parentElement.querySelector(".hint");
+    input.classList.remove("is-error", "is-ok");
+    if (msg === null) { if (hint) hint.classList.add("hidden"); return; }
+    input.classList.add(ok ? "is-ok" : "is-error");
+    if (hint) {
+      hint.textContent = msg;
+      hint.className = "hint text-xs mt-1 ml-1 " + (ok ? "text-success-green" : "text-error-red");
+      hint.classList.remove("hidden");
+    }
+  }
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function validateField(id) {
+    const el = document.getElementById(id);
+    const v = el.value.trim();
+    switch (el.dataset.rule) {
+      case "required":
+        if (!v) return setHint(el, "Este campo es obligatorio.", false), false;
+        return setHint(el, null), true;
+      case "email":
+        if (!emailRe.test(v)) return setHint(el, "Ingresa un correo válido.", false), false;
+        return setHint(el, "Correo válido", true), true;
+      case "pw":
+        if (v.length < 6) return false;
+        return true;
+      case "pw2":
+        if (v !== pw.value) return setHint(el, "Las contraseñas no coinciden.", false), false;
+        if (!v) return false;
+        return setHint(el, "Coinciden", true), true;
+    }
+    return true;
+  }
+
+  // Fuerza de contraseña
+  function pwStrength(v) {
+    let s = 0;
+    if (v.length >= 6) s++;
+    if (v.length >= 10) s++;
+    if (/[A-Z]/.test(v) && /[a-z]/.test(v)) s++;
+    if (/[0-9]/.test(v) || /[^A-Za-z0-9]/.test(v)) s++;
+    return Math.min(s, 4);
+  }
+  const bars = document.querySelectorAll(".pwbar");
+  const colors = ["", "#E53935", "#FFA726", "#D4A574", "#4CAF50"];
+  const words = ["—", "Débil", "Aceptable", "Buena", "Fuerte"];
+  pw.addEventListener("input", function () {
+    const s = pwStrength(pw.value);
+    bars.forEach((b, i) => b.style.background = i < s ? colors[s] : "rgba(142,112,107,.25)");
+    document.getElementById("pwLabel").textContent = words[s];
+    document.getElementById("pwLabel").style.color = s ? colors[s] : "#6B5B4F";
+    if (pw.value && pw.value.length < 6) setHint(pw, null);
+  });
+
+  ["nombre","email","tel","password2"].forEach(id => {
+    document.getElementById(id).addEventListener("blur", () => validateField(id));
+  });
+  document.getElementById("password2").addEventListener("input", () => {
+    if (document.getElementById("password2").value) validateField("password2");
+  });
+
+  const form = document.getElementById("regForm");
+  const btn = document.getElementById("submitBtn");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const ids = ["nombre","email","tel","password","password2"];
+    let ok = true;
+    ids.forEach(id => { if (!validateField(id)) ok = false; });
+    if (pw.value.length < 6) { setHint(pw, "Mínimo 6 caracteres.", false); ok = false; }
+    if (!document.getElementById("terms").checked) {
+      ok = false;
+      window.membrilloToast({ type: "warn", title: "Falta un paso", body: "Debes aceptar los términos para continuar." });
+    }
+    if (!ok) return;
+    const labels = btn.querySelectorAll(".btn-label");
+    labels.forEach(l => l.style.display = "none");
+    btn.insertAdjacentHTML("beforeend", '<span class="ld material-symbols-outlined animate-spin" style="font-size:21px">progress_activity</span>');
+    btn.disabled = true;
+    setTimeout(function () {
+      window.membrilloToast({ type: "ok", title: "¡Cuenta creada!", body: "Bienvenida a El Membrillo, María." });
+      setTimeout(() => window.location.href = "mi-cuenta.html", 900);
+    }, 1100);
+  });
+</script>
+</body>
+</html>
