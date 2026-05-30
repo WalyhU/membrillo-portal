@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pago · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen pb-16">
+
+<header class="sticky top-0 z-50 bg-bg-cream/80 glass-nav border-b border-primary/10 soft-shadow">
+  <div class="flex items-center justify-between px-5 md:px-8 py-4 max-w-container mx-auto">
+    <a href="index.html" class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-gold ms-fill" style="font-size:20px">local_florist</span></div><span class="font-display text-xl text-primary">El Membrillo</span></a>
+    <div class="flex items-center gap-2 text-text-muted text-sm"><span class="material-symbols-outlined text-success-green" style="font-size:18px">lock</span>Pago seguro</div>
+  </div>
+</header>
+
+<main class="max-w-container mx-auto px-5 md:px-8 py-7">
+  <div class="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
+    <section class="space-y-6">
+      <div id="reserveBar" class="flex items-center gap-3 rounded-2xl bg-white border border-warning-amber/40 px-5 py-3.5 soft-shadow">
+        <span class="material-symbols-outlined text-warning-amber">timer</span>
+        <div class="flex-1"><p class="text-sm font-semibold text-text-dark">Tu reserva está garantizada</p><p class="text-xs text-text-muted">El stock se mantiene apartado mientras completas el pago.</p></div>
+        <div class="text-right"><p id="countdown" class="font-display text-2xl text-primary tabular-nums">15:00</p><p class="eyebrow text-text-muted" style="font-size:8px">restante</p></div>
+      </div>
+
+      <div class="cc-scene max-w-md mx-auto lg:mx-0">
+        <div id="ccCard" class="cc-card soft-shadow">
+          <div class="cc-face cc-gradient text-white p-6 flex flex-col justify-between">
+            <div class="flex items-start justify-between">
+              <div class="w-12 h-9 rounded-md bg-gradient-to-br from-gold to-[#b8895a]"></div>
+              <span class="material-symbols-outlined text-white/80" style="font-size:26px">contactless</span>
+              <span id="brandFront" class="font-display text-xl italic tracking-wide ml-auto"></span>
+            </div>
+            <p id="ccNumber" class="font-mono text-[22px] tracking-[0.12em] mt-2">•••• •••• •••• ••••</p>
+            <div class="flex items-end justify-between">
+              <div><p class="eyebrow text-white/55" style="font-size:8px">Titular</p><p id="ccHolder" class="font-medium tracking-wide uppercase text-sm mt-0.5">NOMBRE APELLIDO</p></div>
+              <div class="text-right"><p class="eyebrow text-white/55" style="font-size:8px">Expira</p><p id="ccExp" class="font-medium text-sm mt-0.5">MM/AA</p></div>
+            </div>
+          </div>
+          <div class="cc-face cc-back cc-gradient text-white">
+            <div class="h-11 bg-black/70 mt-5"></div>
+            <div class="px-6 mt-4"><div class="bg-white/90 h-9 rounded flex items-center justify-end px-3"><span id="ccCvvBack" class="font-mono text-sidebar tracking-widest text-sm">•••</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6">
+        <h2 class="font-display text-xl text-text-dark mb-4">Método de pago</h2>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <label class="method-opt is-active flex items-center gap-3 p-4 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer" data-method="card">
+            <input type="radio" name="method" class="hidden" checked/><span class="material-symbols-outlined text-primary">credit_card</span><span class="font-semibold text-sm text-text-dark">Tarjeta</span><span class="check material-symbols-outlined text-primary ms-fill ml-auto" style="font-size:20px">check_circle</span>
+          </label>
+          <label class="method-opt flex items-center gap-3 p-4 rounded-xl border-2 border-outline-variant/40 cursor-pointer hover:border-primary/40" data-method="cash">
+            <input type="radio" name="method" class="hidden"/><span class="material-symbols-outlined text-text-muted">storefront</span><span class="font-semibold text-sm text-text-dark">Contra entrega</span><span class="check material-symbols-outlined text-primary ms-fill ml-auto hidden" style="font-size:20px">check_circle</span>
+          </label>
+        </div>
+        <form id="cardForm" novalidate class="space-y-4">
+          <div class="flex items-center justify-between"><label class="eyebrow text-text-muted">Número de tarjeta</label><button type="button" id="useTest" class="text-[11px] font-semibold text-primary flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:14px">bolt</span>Usar tarjeta de prueba</button></div>
+          <div class="relative"><input id="num" inputmode="numeric" placeholder="0000 0000 0000 0000" class="field font-mono tracking-wider pr-12" maxlength="19"/><span id="numCheck" class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 hidden" style="font-size:20px"></span></div>
+          <div><label class="block eyebrow text-text-muted mb-1.5">Titular</label><input id="holder" placeholder="Como aparece en la tarjeta" class="field" style="text-transform:uppercase"/></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div><label class="block eyebrow text-text-muted mb-1.5">Expira (MM/AA)</label><input id="exp" inputmode="numeric" placeholder="MM/AA" class="field font-mono" maxlength="5"/></div>
+            <div><label class="block eyebrow text-text-muted mb-1.5">CVV</label><input id="cvv" inputmode="numeric" placeholder="•••" class="field font-mono" maxlength="4"/></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-text-muted">
+        <span class="flex items-center gap-1.5 text-xs"><span class="material-symbols-outlined text-success-green" style="font-size:17px">lock</span>SSL simulado</span>
+        <span class="flex items-center gap-1.5 text-xs"><span class="material-symbols-outlined text-success-green" style="font-size:17px">verified_user</span>Validación Luhn</span>
+      </div>
+    </section>
+
+    <aside class="lg:sticky lg:top-24">
+      <div class="bg-secondary-container/25 rounded-3xl border border-secondary-container/50 p-7">
+        <h2 class="font-display text-2xl text-primary mb-5">Resumen</h2>
+        <div id="sumItems" class="space-y-3 mb-5"></div>
+        <div class="space-y-2.5 border-t border-outline-variant/30 pt-4 text-sm">
+          <div class="flex justify-between"><span class="text-text-muted">Subtotal</span><span id="sumSub" class="font-medium">—</span></div>
+          <div class="flex justify-between"><span class="text-text-muted">IVA (12%)</span><span id="sumIva" class="font-medium">—</span></div>
+          <div class="flex justify-between"><span class="text-text-muted">Retiro en sucursal</span><span class="font-medium text-success-green">Gratis</span></div>
+        </div>
+        <div class="flex items-end justify-between border-t border-outline-variant/30 mt-4 pt-4"><span class="font-display text-xl text-text-dark">Total</span><span id="sumTotal" class="font-display text-3xl text-secondary">—</span></div>
+        <div class="mt-4 flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2.5 text-xs text-text-muted"><span class="material-symbols-outlined text-primary" style="font-size:18px">storefront</span>Retiro en <strong id="sumSucursal" class="text-text-dark font-semibold">—</strong></div>
+        <button id="payBtn" class="btn-primary ripple w-full mt-5 py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2"><span class="material-symbols-outlined pay-label" style="font-size:20px">lock</span><span class="pay-label">Pagar</span></button>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="resultOverlay" class="hidden fixed inset-0 z-[150] bg-sidebar/55 backdrop-blur-sm flex items-center justify-center p-5">
+  <div class="bg-bg-cream rounded-3xl max-w-md w-full p-8 text-center shadow-2xl" id="resultCard"></div>
+</div>
+
+<script src="assets/membrillo.js"></script>
+<script src="assets/api.js"></script>
+<script>
+(async function () {
+  const facturaId = parseInt(new URLSearchParams(location.search).get("factura"), 10);
+  if (!facturaId) { document.body.innerHTML = '<p class="p-10">Factura no especificada.</p>'; return; }
+
+  // cargar factura
+  let f;
+  try { f = await Mem.apiFetch("/facturas/" + facturaId); } catch (e) { document.body.innerHTML = '<p class="p-10 text-error-red">No se encontró la factura.</p>'; return; }
+  if (f.estado !== "pendiente") { showExpired(f.estado === "pagada"); }
+
+  document.getElementById("sumItems").innerHTML = (f.items || []).map((i) =>
+    '<div class="flex items-center gap-3"><div class="w-12 h-12 rounded-lg bg-white flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary/30">local_florist</span></div>' +
+    '<div class="flex-1 min-w-0"><p class="text-sm font-medium text-text-dark truncate">' + i.producto + '</p><p class="text-xs text-text-muted">' + i.cantidad + ' × ' + Mem.money(i.precio_unit) + '</p></div>' +
+    '<span class="font-display text-text-dark">' + Mem.money(i.subtotal) + '</span></div>').join("");
+  document.getElementById("sumSub").textContent = Mem.money(f.subtotal);
+  document.getElementById("sumIva").textContent = Mem.money(f.iva);
+  document.getElementById("sumTotal").textContent = Mem.money(f.total);
+  document.getElementById("sumSucursal").textContent = f.sucursal ? f.sucursal.nombre : "—";
+  setPayLabel("Pagar " + Mem.money(f.total), "lock");
+
+  // ---- tarjeta visual ----
+  const num = document.getElementById("num"), holder = document.getElementById("holder"), exp = document.getElementById("exp"), cvv = document.getElementById("cvv");
+  const ccNumber = document.getElementById("ccNumber"), ccHolder = document.getElementById("ccHolder"), ccExp = document.getElementById("ccExp"), ccCvvBack = document.getElementById("ccCvvBack");
+  const brandFront = document.getElementById("brandFront"), ccCard = document.getElementById("ccCard");
+  function brand(v) { return /^4/.test(v) ? "VISA" : /^(5[1-5]|2[2-7])/.test(v) ? "Mastercard" : /^3[47]/.test(v) ? "Amex" : ""; }
+  function luhn(s) { let sum = 0, alt = false; for (let i = s.length - 1; i >= 0; i--) { let n = +s[i]; if (alt) { n *= 2; if (n > 9) n -= 9; } sum += n; alt = !alt; } return s.length >= 13 && sum % 10 === 0; }
+  num.addEventListener("input", () => {
+    let d = num.value.replace(/\D/g, "").slice(0, 16); num.value = d.replace(/(.{4})/g, "$1 ").trim();
+    brandFront.textContent = brand(d);
+    ccNumber.textContent = d.padEnd(16, "•").replace(/(.{4})/g, "$1 ").trim();
+    const chk = document.getElementById("numCheck");
+    if (d.length >= 13) { const ok = luhn(d); chk.textContent = ok ? "check_circle" : "error"; chk.style.color = ok ? "#4CAF50" : "#E53935"; chk.classList.remove("hidden"); num.classList.toggle("is-ok", ok); num.classList.toggle("is-error", !ok); }
+    else { chk.classList.add("hidden"); num.classList.remove("is-ok", "is-error"); }
+  });
+  holder.addEventListener("input", () => ccHolder.textContent = holder.value.trim() ? holder.value.toUpperCase() : "NOMBRE APELLIDO");
+  exp.addEventListener("input", () => { let d = exp.value.replace(/\D/g, "").slice(0, 4); if (d.length >= 3) d = d.slice(0, 2) + "/" + d.slice(2); exp.value = d; ccExp.textContent = d || "MM/AA"; });
+  cvv.addEventListener("input", () => { cvv.value = cvv.value.replace(/\D/g, "").slice(0, 4); ccCvvBack.textContent = cvv.value || "•••"; });
+  cvv.addEventListener("focus", () => ccCard.classList.add("is-flipped"));
+  cvv.addEventListener("blur", () => ccCard.classList.remove("is-flipped"));
+  document.getElementById("useTest").addEventListener("click", () => {
+    num.value = "4111111111111111"; num.dispatchEvent(new Event("input"));
+    holder.value = "MARIA F GARCIA"; holder.dispatchEvent(new Event("input"));
+    exp.value = "12/29"; exp.dispatchEvent(new Event("input"));
+    cvv.value = "123"; cvv.dispatchEvent(new Event("input"));
+  });
+
+  // ---- método ----
+  let metodo = "card";
+  const opts = document.querySelectorAll(".method-opt"), cardForm = document.getElementById("cardForm"), scene = document.querySelector(".cc-scene");
+  opts.forEach((o) => o.addEventListener("click", () => {
+    opts.forEach((x) => { x.classList.remove("is-active", "border-primary", "bg-primary/5"); x.classList.add("border-outline-variant/40"); x.querySelector(".check").classList.add("hidden"); });
+    o.classList.add("is-active", "border-primary", "bg-primary/5"); o.classList.remove("border-outline-variant/40"); o.querySelector(".check").classList.remove("hidden");
+    metodo = o.dataset.method;
+    const card = metodo === "card";
+    cardForm.style.display = card ? "" : "none"; scene.style.display = card ? "" : "none";
+    setPayLabel(card ? "Pagar " + Mem.money(f.total) : "Confirmar pedido", card ? "lock" : "check");
+  }));
+  function setPayLabel(text, icon) { document.querySelectorAll(".pay-label").forEach((l) => { if (l.classList.contains("material-symbols-outlined")) l.textContent = icon; else l.textContent = text; }); }
+
+  // ---- contador ----
+  let rem = 15 * 60; const cd = document.getElementById("countdown");
+  const t = setInterval(() => { rem--; if (rem <= 0) { clearInterval(t); showExpired(false); return; } cd.textContent = String((rem / 60) | 0).padStart(2, "0") + ":" + String(rem % 60).padStart(2, "0"); if (rem <= 60) cd.classList.add("text-error-red"); }, 1000);
+
+  // ---- pagar ----
+  const payBtn = document.getElementById("payBtn");
+  payBtn.addEventListener("click", async () => {
+    let body = { metodo: metodo === "card" ? "tarjeta" : "contra_entrega" };
+    if (metodo === "card") {
+      const d = num.value.replace(/\D/g, "");
+      if (!luhn(d)) { window.membrilloToast({ type: "warn", title: "Número inválido", body: "No pasa la validación Luhn." }); num.classList.add("is-error"); return; }
+      if (!holder.value.trim() || exp.value.length < 5 || cvv.value.length < 3) { window.membrilloToast({ type: "warn", title: "Faltan datos", body: "Completa titular, expiración y CVV." }); return; }
+      body = { metodo: "tarjeta", numero: d, titular: holder.value, expiracion: exp.value, cvv: cvv.value };
+    }
+    const labels = payBtn.querySelectorAll(".pay-label"); labels.forEach((l) => l.style.display = "none");
+    payBtn.insertAdjacentHTML("beforeend", '<span class="ld material-symbols-outlined animate-spin" style="font-size:22px">progress_activity</span><span class="ld font-semibold">Procesando…</span>');
+    payBtn.disabled = true;
+    try {
+      const r = await Mem.apiFetch("/pago/" + facturaId, { method: "POST", body });
+      if (r.estado === "aprobado") { clearInterval(t); Mem.clearCart(); window.location.href = "compra-exitosa.html?factura=" + facturaId; return; }
+      restorePay();
+      if (r.estado === "rechazado") showRejected(r.error);
+      else if (r.estado === "expirada") showExpired(false);
+      else window.membrilloToast({ type: "warn", title: "Pago", body: r.error || "No se pudo procesar." });
+    } catch (err) {
+      restorePay();
+      if (err.status === 402) showRejected(err.data && err.data.error);
+      else if (err.data && err.data.estado === "invalido") window.membrilloToast({ type: "warn", title: "Tarjeta inválida", body: err.data.error });
+      else window.membrilloToast({ type: "warn", title: "Error", body: err.message });
+    }
+  });
+  function restorePay() { payBtn.querySelectorAll(".ld").forEach((l) => l.remove()); payBtn.querySelectorAll(".pay-label").forEach((l) => l.style.display = ""); payBtn.disabled = false; }
+
+  function showRejected(msg) {
+    const card = document.getElementById("resultCard");
+    card.innerHTML = '<div class="w-24 h-24 mx-auto mb-5 rounded-full bg-error-red/15 flex items-center justify-center pop-in"><span class="material-symbols-outlined text-error-red" style="font-size:54px">credit_card_off</span></div>' +
+      '<h2 class="font-display text-3xl text-text-dark mb-2">Pago rechazado</h2>' +
+      '<p class="text-text-muted mb-6">' + (msg || "El banco rechazó la tarjeta. Tu reserva se liberó.") + '</p>' +
+      '<a href="index.html" class="btn-primary ripple inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-semibold">Volver al catálogo</a>';
+    document.getElementById("resultOverlay").classList.remove("hidden");
+  }
+  function showExpired() {
+    clearInterval(t);
+    const card = document.getElementById("resultCard");
+    card.innerHTML = '<div class="w-24 h-24 mx-auto mb-5 rounded-full bg-warning-amber/15 flex items-center justify-center pop-in"><span class="material-symbols-outlined text-warning-amber" style="font-size:54px">timer_off</span></div>' +
+      '<h2 class="font-display text-3xl text-text-dark mb-2">Reserva no disponible</h2>' +
+      '<p class="text-text-muted mb-6">La reserva expiró o la factura ya no está pendiente. El stock se liberó.</p>' +
+      '<a href="index.html" class="btn-primary ripple inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-semibold">Volver al catálogo</a>';
+    document.getElementById("resultOverlay").classList.remove("hidden");
+  }
+})();
+</script>
+</body>
+</html>

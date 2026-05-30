@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Detalle de pedido · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="../assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/membrillo.css"/>
+</head>
+<body data-page="pedidos" data-title="Detalle de pedido" data-eyebrow="Administración · #MEM-2026-0844" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+
+    <main class="p-5 md:p-8 space-y-6 max-w-[1100px]">
+
+      <a href="pedidos.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-primary"><span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>Volver a pedidos</a>
+
+      <!-- Encabezado factura -->
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3">
+            <h2 class="font-display text-3xl text-text-dark">#MEM-2026-0844</h2>
+            <span class="badge badge-paid"><span class="material-symbols-outlined" style="font-size:14px">check_circle</span>Pagada</span>
+          </div>
+          <p class="text-sm text-text-muted mt-1">Emitida el 27 may 2026 · 14:32 · Pago con tarjeta VISA ••4242</p>
+        </div>
+        <div class="flex gap-2">
+          <button id="pdfBtn" class="btn-primary ripple flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm"><span class="material-symbols-outlined" style="font-size:18px">download</span>Factura PDF</button>
+          <button class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-medium text-text-muted hover:bg-card-cream"><span class="material-symbols-outlined" style="font-size:18px">print</span></button>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-[1.6fr_1fr] gap-6 items-start">
+
+        <!-- Líneas -->
+        <section class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden">
+          <h3 class="font-display text-xl text-text-dark px-6 pt-5 pb-3">Productos</h3>
+          <table class="w-full">
+            <thead><tr class="bg-card-cream/50 text-left">
+              <th class="eyebrow text-text-muted px-6 py-2.5">Producto</th>
+              <th class="eyebrow text-text-muted px-3 py-2.5 text-center">Cant.</th>
+              <th class="eyebrow text-text-muted px-3 py-2.5 text-right">Unit.</th>
+              <th class="eyebrow text-text-muted px-6 py-2.5 text-right">Subtotal</th>
+            </tr></thead>
+            <tbody>
+              <tr class="border-t border-outline-variant/20">
+                <td class="px-6 py-3"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHe6rkY0AMhwY1zsScol7-q6hqtp5iJMtmJStpJOidCGzTXCi7ZYIww3G_EKCgzImesD5KhAJahtTTkf7XnB6VZdqM0QoYK1fylYJnDL2unGTSnzEpLUyDJYSqxcX79N_QUqwZEFzlYw9ugibfTt7-Uw21-WEB5FiCY7b1g3lhWcWYh6NVeCoG656x4NcHA30nF98fip7nZwGNiLlVBSUVSQIVZ8tzUMGNXQJsmYLWmaAhFiN2JB0mnektdwEUZ7bEiip5vcV1w9M"/></div><div><p class="text-sm font-semibold text-text-dark">Jalea de Membrillo</p><p class="text-[11px] text-text-muted">450g Premium</p></div></div></td>
+                <td class="px-3 py-3 text-center text-sm">4</td>
+                <td class="px-3 py-3 text-right text-sm">Q45.00</td>
+                <td class="px-6 py-3 text-right font-display text-text-dark">Q180.00</td>
+              </tr>
+              <tr class="border-t border-outline-variant/20">
+                <td class="px-6 py-3"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs5oqXIx92oeeiYHgf_UjQtSe0TUrh6Y27EYPnaMstETD0jiNJfBsvf8rax70OHjLYLL0Cj-0ybRp_c6Xicqmz-XwMZAQbG7UeLWJWCZc7kvn-jItdU9aLwhBzA1zDsRoCZrmX3Cg16CcgGjWuykhyOg_G4O4c_CbB-Ubp0Sk5BqH9IvhRl1LtvD0shhNV49eKNe7RnCSsh0jt78GOIVlsShoaI8Eax4TQmcfrBgK4u70rLH8A2FSPutAJSbGOqTqlHjDI3EBGinA"/></div><div><p class="text-sm font-semibold text-text-dark">Pack Regalo Trío</p><p class="text-[11px] text-text-muted">Selección</p></div></div></td>
+                <td class="px-3 py-3 text-center text-sm">2</td>
+                <td class="px-3 py-3 text-right text-sm">Q52.50</td>
+                <td class="px-6 py-3 text-right font-display text-text-dark">Q105.00</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="border-t border-outline-variant/20 px-6 py-5 space-y-2 text-sm">
+            <div class="flex justify-between"><span class="text-text-muted">Subtotal</span><span class="font-medium">Q285.00</span></div>
+            <div class="flex justify-between"><span class="text-text-muted">IVA (12%)</span><span class="font-medium">Q27.50</span></div>
+            <div class="flex items-end justify-between border-t border-outline-variant/20 pt-3 mt-1">
+              <span class="font-display text-xl text-text-dark">Total</span>
+              <span class="font-display text-2xl text-primary">Q312.50</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cliente + retiro + timeline -->
+        <aside class="space-y-5">
+          <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6">
+            <h3 class="font-display text-lg text-text-dark mb-4">Cliente</h3>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold">DE</div>
+              <div><p class="font-semibold text-text-dark">Diego Estrada</p><p class="text-xs text-text-muted">Cliente desde 2023</p></div>
+            </div>
+            <dl class="space-y-2.5 text-sm">
+              <div class="flex items-center gap-2 text-text-muted"><span class="material-symbols-outlined" style="font-size:17px">mail</span>diego.estrada@correo.com</div>
+              <div class="flex items-center gap-2 text-text-muted"><span class="material-symbols-outlined" style="font-size:17px">call</span>+502 5589 1234</div>
+              <div class="flex items-center gap-2 text-text-muted"><span class="material-symbols-outlined" style="font-size:17px">receipt</span>NIT 2298641-5</div>
+            </dl>
+          </div>
+
+          <div class="bg-card-cream rounded-2xl p-6 border border-primary/5">
+            <h3 class="font-display text-lg text-text-dark mb-3">Retiro</h3>
+            <p class="font-semibold text-text-dark">Boutique Zona 10 (Guatemala)</p>
+            <p class="text-sm text-text-muted">Av. de las Jaleas 1962</p>
+            <div class="mt-3 flex items-center gap-2 text-sm text-success-green font-medium"><span class="material-symbols-outlined" style="font-size:18px">check_circle</span>Listo para retiro</div>
+          </div>
+
+          <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6">
+            <h3 class="font-display text-lg text-text-dark mb-4">Línea de tiempo</h3>
+            <ol class="relative border-l-2 border-outline-variant/30 ml-1 space-y-5">
+              <li class="pl-5 relative"><span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-success-green"></span><p class="text-sm font-medium text-text-dark">Pedido creado</p><p class="text-xs text-text-muted">27 may · 14:30</p></li>
+              <li class="pl-5 relative"><span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-success-green"></span><p class="text-sm font-medium text-text-dark">Pago aprobado</p><p class="text-xs text-text-muted">27 may · 14:32 · VISA ••4242</p></li>
+              <li class="pl-5 relative"><span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-primary"></span><p class="text-sm font-medium text-text-dark">Preparado en sucursal</p><p class="text-xs text-text-muted">27 may · 16:10</p></li>
+              <li class="pl-5 relative"><span class="absolute -left-[7px] top-1 w-3 h-3 rounded-full bg-outline-variant"></span><p class="text-sm font-medium text-text-muted">Retirado por cliente</p><p class="text-xs text-text-muted">Pendiente</p></li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/membrillo.js"></script>
+<script src="../assets/admin-shell.js"></script>
+<script>
+  document.getElementById("pdfBtn").addEventListener("click", () => {
+    window.membrilloToast({ type:"ok", icon:"download", title:"Generando factura PDF", body:"#MEM-2026-0844 · descarga lista en breve." });
+  });
+</script>
+</body>
+</html>

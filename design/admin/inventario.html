@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inventario · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="../assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/membrillo.css"/>
+<style>
+  .cell-input { width: 100%; text-align:center; font-weight:700; font-size:14px; border:1px solid transparent; border-radius:9px; padding:8px 4px; background:transparent; transition: box-shadow .15s; }
+  .cell-input:focus { outline:none; box-shadow: 0 0 0 2px rgba(139,0,0,.35); background:#fff; }
+  .lvl-ok    { background: rgba(76,175,80,.10);  color:#2e7d32; }
+  .lvl-mid   { background: rgba(255,167,38,.12); color:#b26a00; }
+  .lvl-low   { background: rgba(229,57,53,.10);  color:#c62828; }
+  .cell-dirty { box-shadow: inset 0 0 0 2px rgba(139,0,0,.4) !important; }
+</style>
+</head>
+<body data-page="inventario" data-title="Inventario" data-eyebrow="Administración · matriz editable" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+
+    <main class="p-5 md:p-8 pb-28 space-y-6 max-w-[1200px]">
+
+      <!-- Toolbar -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 bg-white rounded-xl border border-outline-variant/40 px-3 py-2">
+          <span class="material-symbols-outlined text-text-muted" style="font-size:19px">filter_alt</span>
+          <select class="bg-transparent text-sm outline-none text-text-dark pr-2">
+            <option>Todos los productos</option><option>Solo jaleas</option><option>Solo mermeladas</option>
+          </select>
+        </div>
+        <button class="flex items-center gap-2 bg-white rounded-xl border border-outline-variant/40 px-3 py-2 text-sm text-text-dark hover:bg-card-cream">
+          <span class="material-symbols-outlined text-text-muted" style="font-size:19px">visibility</span>Solo stock bajo
+        </button>
+        <div class="ml-auto flex items-center gap-4 text-xs text-text-muted">
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-success-green/40"></span>OK</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-warning-amber/40"></span>Medio</span>
+          <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-error-red/40"></span>Bajo</span>
+        </div>
+      </div>
+
+      <!-- Matriz -->
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden">
+        <div class="overflow-x-auto no-scrollbar">
+          <table class="w-full min-w-[760px] border-collapse">
+            <thead>
+              <tr class="bg-card-cream/60">
+                <th class="text-left eyebrow text-text-muted px-5 py-3.5 sticky left-0 bg-card-cream/60 z-10">Producto</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Guatemala</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Quetzalt.</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Mazate.</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Escuintla</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Pto.Barrios</th>
+                <th class="eyebrow text-text-muted px-2 py-3.5">Jutiapa</th>
+              </tr>
+            </thead>
+            <tbody id="matrixBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="text-xs text-text-muted flex items-center gap-1.5"><span class="material-symbols-outlined text-warning-amber" style="font-size:16px">bolt</span>Las celdas con destello amarillo fueron actualizadas por otra venta o usuario en tiempo real (SSE). El número entre paréntesis indica unidades reservadas.</p>
+    </main>
+  </div>
+</div>
+
+<!-- Guardar cambios sticky -->
+<div id="saveBar" class="hidden fixed bottom-5 right-5 z-40">
+  <button id="saveBtn" class="btn-primary ripple flex items-center gap-3 pl-5 pr-6 py-4 rounded-full" style="box-shadow:0 10px 30px rgba(139,0,0,.3)">
+    <span class="material-symbols-outlined">save</span>
+    <span class="font-semibold">Guardar cambios</span>
+    <span id="dirtyCount" class="bg-white/25 rounded-full px-2.5 py-0.5 text-sm font-bold">0</span>
+  </button>
+</div>
+
+<script src="../assets/membrillo.js"></script>
+<script src="../assets/admin-shell.js"></script>
+<script>
+  const sucursales = ["Guatemala","Quetzaltenango","Mazatenango","Escuintla","Puerto Barrios","Jutiapa"];
+  const products = [
+    { name:"Jalea de Membrillo", sub:"450g Premium", img:"https://lh3.googleusercontent.com/aida-public/AB6AXuAHe6rkY0AMhwY1zsScol7-q6hqtp5iJMtmJStpJOidCGzTXCi7ZYIww3G_EKCgzImesD5KhAJahtTTkf7XnB6VZdqM0QoYK1fylYJnDL2unGTSnzEpLUyDJYSqxcX79N_QUqwZEFzlYw9ugibfTt7-Uw21-WEB5FiCY7b1g3lhWcWYh6NVeCoG656x4NcHA30nF98fip7nZwGNiLlVBSUVSQIVZ8tzUMGNXQJsmYLWmaAhFiN2JB0mnektdwEUZ7bEiip5vcV1w9M", stock:[120,86,45,18,52,73], res:[8,4,2,1,3,5] },
+    { name:"Bloque Artesano", sub:"1kg Familiar", img:"https://lh3.googleusercontent.com/aida-public/AB6AXuCHLebJihSFI7Za-fwWxXT-P5rKu1f6qerGA1TUuYRiY0kqX5s8bzM2lQgKg1qB4BCedqqZnB7Y59iKSIJG5QIAqb4-HpOJW-imBZ-FohoznMAz4WOEAUnxAwsZaqznZKDcZKqGE-taXicy6s1moVbwZxrsNoxzSG4SULJnEitFnMfI5EKMqyT664B8HaJPoeE4qKV7wMxPmDkEjhQlf1gWkJV6JbTRzvnFaEbvIi2FfoXnTxzija6eUV5J5LSXNK2TpOFvwXltlh8", stock:[24,8,3,0,11,6], res:[2,1,0,0,1,0] },
+    { name:"Mermelada de Naranja", sub:"Naranja amarga", img:"https://lh3.googleusercontent.com/aida-public/AB6AXuDbI3VREXB6Q2aqcmt0GK11L9Kfb16ECCYDXcYdWi7I3C9XRSirOedCji1C9EVrdn4wPPdV4tzppTFWUMzwVDoZuegvum193yuVXtU1wwXUPdyGEaVikuy57dEB3HINf30lSUqxkkrHPclC4AGZieFhmGWFhdmpvJ0v4qbb8momMSQj1kzJJCjalBgcjR1Rz403SejUgSFIE9OcTVx9VgcDzIHRv57ddzqDFNf7hCHzNPMjY_eJAhae5qe7AYG4qELthtfha5gCAkY", stock:[14,32,21,9,3,17], res:[1,3,2,0,0,1] },
+    { name:"Pack Regalo Trío", sub:"Selección", img:"https://lh3.googleusercontent.com/aida-public/AB6AXuDs5oqXIx92oeeiYHgf_UjQtSe0TUrh6Y27EYPnaMstETD0jiNJfBsvf8rax70OHjLYLL0Cj-0ybRp_c6Xicqmz-XwMZAQbG7UeLWJWCZc7kvn-jItdU9aLwhBzA1zDsRoCZrmX3Cg16CcgGjWuykhyOg_G4O4c_CbB-Ubp0Sk5BqH9IvhRl1LtvD0shhNV49eKNe7RnCSsh0jt78GOIVlsShoaI8Eax4TQmcfrBgK4u70rLH8A2FSPutAJSbGOqTqlHjDI3EBGinA", stock:[56,31,12,22,8,19], res:[5,2,1,2,0,1] },
+    { name:"Membrillo en Barra", sub:"500g", img:"https://lh3.googleusercontent.com/aida-public/AB6AXuBRLJ72uWofLDNmaW1_5n2qoC5whLDYMMG0UfX5yta9qzIgbHYsqQlj2RZj0jcA34HRtTStteZP9fpLJhBXVvBO6BR79T3V2zn3st-wwgZilUcg-TDfUDNmylISu8Vzb5WCWdzrfFQdCNqUIdcpKzGrDc8QiRW3y0s9Fnrv9HeMYDYCqOqBdF4SJZe_ckOcgmKNZT7Nw8ceng2ti4vNJvYzMB7Asjn93SOceJ9Z3l3H_L4jMDgAH4fmW7bXm9GGfdsKIY533_29mbs", stock:[73,40,7,28,15,33], res:[6,3,0,2,1,2] },
+  ];
+
+  function levelClass(v) { return v <= 5 ? "lvl-low" : v <= 15 ? "lvl-mid" : "lvl-ok"; }
+
+  const body = document.getElementById("matrixBody");
+  products.forEach((p, ri) => {
+    const tr = document.createElement("tr");
+    tr.className = "border-t border-outline-variant/20";
+    let cells = '<td class="px-5 py-3 sticky left-0 bg-white z-10">' +
+      '<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="' + p.img + '"/></div>' +
+      '<div><p class="text-sm font-semibold text-text-dark whitespace-nowrap">' + p.name + '</p><p class="text-[11px] text-text-muted">' + p.sub + '</p></div></div></td>';
+    p.stock.forEach((v, ci) => {
+      cells += '<td class="px-2 py-3"><div class="relative">' +
+        '<input class="cell-input ' + levelClass(v) + '" data-r="' + ri + '" data-c="' + ci + '" data-orig="' + v + '" type="number" value="' + v + '"/>' +
+        '<span class="res-tag block text-center text-[10px] text-text-muted mt-0.5">' + (p.res[ci] > 0 ? p.res[ci] + ' reserv.' : '&nbsp;') + '</span>' +
+        '</div></td>';
+    });
+    tr.innerHTML = cells;
+    body.appendChild(tr);
+  });
+
+  // Edición
+  const dirty = new Set();
+  const saveBar = document.getElementById("saveBar"), dirtyCount = document.getElementById("dirtyCount");
+  function refreshLevel(inp) {
+    const v = parseInt(inp.value || "0", 10);
+    inp.classList.remove("lvl-ok","lvl-mid","lvl-low");
+    inp.classList.add(levelClass(v));
+  }
+  body.addEventListener("input", (e) => {
+    const inp = e.target.closest(".cell-input"); if (!inp) return;
+    refreshLevel(inp);
+    const key = inp.dataset.r + "-" + inp.dataset.c;
+    if (parseInt(inp.value,10) !== parseInt(inp.dataset.orig,10)) { dirty.add(key); inp.classList.add("cell-dirty"); }
+    else { dirty.delete(key); inp.classList.remove("cell-dirty"); }
+    dirtyCount.textContent = dirty.size;
+    saveBar.classList.toggle("hidden", dirty.size === 0);
+  });
+  document.getElementById("saveBtn").addEventListener("click", () => {
+    document.querySelectorAll(".cell-dirty").forEach(i => { i.classList.remove("cell-dirty"); i.dataset.orig = i.value; });
+    const n = dirty.size; dirty.clear(); dirtyCount.textContent = 0; saveBar.classList.add("hidden");
+    window.membrilloToast({ type:"ok", icon:"save", title:"Inventario guardado", body: n + " celda(s) sincronizada(s) con todas las sucursales." });
+  });
+
+  // SSE: una venta descuenta una celda al azar y la destella
+  document.addEventListener("membrillo:sale", () => {
+    const inputs = [...document.querySelectorAll(".cell-input")].filter(i => parseInt(i.value,10) > 0 && !dirty.has(i.dataset.r+"-"+i.dataset.c));
+    if (!inputs.length) return;
+    const inp = inputs[(Math.random()*inputs.length)|0];
+    inp.value = Math.max(0, parseInt(inp.value,10) - (1 + ((Math.random()*2)|0)));
+    inp.dataset.orig = inp.value;
+    refreshLevel(inp);
+    const wrap = inp.closest("td");
+    wrap.classList.add("stock-flash");
+    setTimeout(() => wrap.classList.remove("stock-flash"), 650);
+  });
+</script>
+</body>
+</html>

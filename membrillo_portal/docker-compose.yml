@@ -27,27 +27,48 @@ services:
       PMA_PASSWORD: membrillo
       UPLOAD_LIMIT: 64M
     ports:
-      - "8080:80"
+      - "8082:80"
     depends_on:
       mysql:
         condition: service_healthy
 
-  app:
+  api:
     build: .
-    container_name: membrillo_app
+    container_name: membrillo_api
     restart: unless-stopped
     environment:
       DATABASE_URL: mysql+pymysql://root:membrillo@mysql:3306/membrillo_db
       SECRET_KEY: cambia-esto-en-produccion-membrillo-2026
+      ALLOWED_ORIGINS: "http://localhost:8080,http://localhost:8081,http://127.0.0.1:8080,http://127.0.0.1:8081"
     ports:
       - "8000:8000"
     depends_on:
       mysql:
         condition: service_healthy
-    profiles:
-      - full
     volumes:
       - ./app/static/facturas:/app/app/static/facturas
+
+  web:
+    image: nginx:alpine
+    container_name: membrillo_web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+    depends_on:
+      - api
+
+  admin:
+    image: nginx:alpine
+    container_name: membrillo_admin
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - ./admin:/usr/share/nginx/html:ro
+    depends_on:
+      - api
 
 volumes:
   mysql_data:

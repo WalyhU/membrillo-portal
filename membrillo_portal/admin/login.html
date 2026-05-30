@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body class="bg-sidebar min-h-screen flex items-center justify-center px-4 text-on-surface">
+<div class="w-full max-w-[400px]">
+  <div class="flex items-center justify-center gap-3 mb-8">
+    <div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-gold ms-fill">admin_panel_settings</span></div>
+    <div><p class="font-display text-2xl text-[#FFE7DE] leading-none">El Membrillo</p><p class="eyebrow text-gold/80 mt-1" style="font-size:9px">Admin Console</p></div>
+  </div>
+  <div class="bg-white rounded-2xl soft-shadow p-8">
+    <h1 class="font-display text-2xl text-text-dark mb-1">Acceso administrador</h1>
+    <p class="text-text-muted text-sm mb-6">Solo personal autorizado.</p>
+    <div id="err" class="hidden mb-4 rounded-xl bg-[#fff0ee] border border-error-red/30 px-4 py-2 text-sm text-[#8a2c28]"></div>
+    <form id="f" class="space-y-4">
+      <div><label class="block eyebrow text-text-muted mb-1.5">Correo</label><input id="email" type="email" required class="field" value="admin@membrillo.gt"/></div>
+      <div><label class="block eyebrow text-text-muted mb-1.5">Contraseña</label><input id="password" type="password" required class="field" placeholder="••••••••"/></div>
+      <button class="btn-primary ripple w-full py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2"><span class="lbl">Entrar al panel</span></button>
+    </form>
+  </div>
+  <p class="text-center text-[#9c8678] text-xs mt-6">v2.0 · © 1962 El Membrillo</p>
+</div>
+<script src="assets/membrillo.js"></script>
+<script src="assets/admin-api.js"></script>
+<script>
+  if (AdminAPI.token() && AdminAPI.user() && AdminAPI.user().rol === "admin") location.href = "index.html";
+  const f = document.getElementById("f");
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    document.getElementById("err").classList.add("hidden");
+    const btn = f.querySelector("button"); btn.disabled = true; btn.querySelector(".lbl").textContent = "Entrando…";
+    try {
+      const res = await fetch(AdminAPI.API + "/auth/login", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.value, password: password.value }),
+      });
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error((data && data.detail) || "Credenciales inválidas");
+      if (data.user.rol !== "admin") throw new Error("Esta cuenta no es administradora.");
+      AdminAPI.setSession(data.token, data.user);
+      location.href = "index.html";
+    } catch (err) {
+      const e2 = document.getElementById("err"); e2.textContent = err.message || "Credenciales inválidas"; e2.classList.remove("hidden");
+      btn.disabled = false; btn.querySelector(".lbl").textContent = "Entrar al panel";
+    }
+  });
+</script>
+</body>
+</html>

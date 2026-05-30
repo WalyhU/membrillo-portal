@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#5a403c",
+                    "text-muted": "#6B5B4F",
+                    "secondary-fixed": "#ffdcbc",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#efbd8a",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#3d2c2a",
+                    "primary-container": "#8b0000",
+                    "bg-cream": "#FAF6F0",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fecb97",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#614018",
+                    "inverse-on-surface": "#ffedea",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#0025c8",
+                    "outline-variant": "#e3beb8",
+                    "on-tertiary-container": "#9ea9ff",
+                    "surface-container-high": "#fee2dd",
+                    "on-surface": "#261816",
+                    "on-secondary-fixed": "#2c1700",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#00178d",
+                    "surface-container-low": "#fff0ee",
+                    "warning-amber": "#FFA726",
+                    "on-primary-container": "#ff907f",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#ffe9e6",
+                    "on-background": "#261816",
+                    "primary-hover": "#6B0000",
+                    "on-tertiary-fixed-variant": "#0d2ccc",
+                    "tertiary-fixed": "#dfe0ff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#920703",
+                    "outline": "#8e706b",
+                    "tertiary-fixed-dim": "#bcc3ff",
+                    "primary": "#610000",
+                    "error-red": "#E53935",
+                    "secondary": "#7c572d",
+                    "success-green": "#4CAF50",
+                    "background": "#fff8f6",
+                    "surface": "#fff8f6",
+                    "on-secondary-container": "#79542a",
+                    "inverse-primary": "#ffb4a8",
+                    "surface-dim": "#efd4d0",
+                    "surface-bright": "#fff8f6",
+                    "surface-variant": "#f8dcd8",
+                    "surface-tint": "#b52619",
+                    "surface-container-highest": "#f8dcd8",
+                    "primary-fixed": "#ffdad4",
+                    "on-tertiary-fixed": "#000d60",
+                    "text-dark": "#2C1810",
+                    "card-cream": "#F5E6D3",
+                    "on-primary-fixed": "#410000"
+            },
+            "fontFamily": {
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "eyebrow": ["Inter"],
+                    "price-lg": ["Playfair Display"],
+                    "display-hero": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "headline-md": ["22px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["36px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "eyebrow": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                    "price-lg": ["28px", {"lineHeight": "1", "fontWeight": "700"}],
+                    "display-hero": ["64px", {"lineHeight": "1.1", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bg-cream font-body-md text-on-surface mb-20">
+<!-- TopAppBar -->
+<header class="bg-[#FAF6F0]/70 backdrop-blur-xl border-b border-[#8B0000]/10 shadow-[0_4px_20px_rgba(139,0,0,0.08)] docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
+<button class="text-[#8B0000] Active: scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="text-2xl font-serif font-bold text-[#8B0000] tracking-tight">El Membrillo</h1>
+<button class="text-[#8B0000] Active: scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+</div>
+</header>
+<main class="max-w-md mx-auto">
+<!-- Breadcrumb -->
+<nav class="px-6 py-4 flex items-center gap-2">
+<span class="font-eyebrow text-text-muted text-[10px]">Inicio</span>
+<span class="material-symbols-outlined text-[12px] text-text-muted" data-icon="chevron_right">chevron_right</span>
+<span class="font-eyebrow text-primary text-[10px] font-bold">Jaleas</span>
+</nav>
+<!-- Product Gallery -->
+<section class="px-4">
+<div class="relative aspect-square rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(139,0,0,0.08)] bg-card-cream mb-4">
+<img class="w-full h-full object-cover" data-alt="A premium artisanal jar of translucent crimson quince jelly sitting on a rustic wooden table. Soft natural light illuminates the golden-red tones of the preserve, emphasizing its smooth texture. The background is a blurred rural orchard during autumn, evoking a sense of heritage and high-end handcrafted quality. The overall mood is warm, sophisticated, and authentic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdhGpv_LwEeAXk7ImjSB05JKbgExH4vj4WwyhPY32Hv6c7jI8KIovfhAUHJUQiIFCG7-q6LZ6xEY40nAzFUc6IvVPok9kprqeZ9ya-zgj1hfvXUq4v2dRyTiCMrl0fCoiKuiTPPQkbvl1nBcMEnuHdOwdSz3YVpqEuoyKCi4NfXky1K1IQSmnXiVni-jKEfQciNARJVXQYnu3Cfqrv3UIqckaFFHS8rgYgwBwQG90t6bdlE6uWk-Ls2bKTt0X0BLMUWaTmO2GAq8A"/>
+</div>
+<div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+<div class="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 border-primary shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Close-up detail of an artisanal glass jar of quince jelly with a gold-foiled label of El Membrillo. The lighting is soft and focused on the rich deep red color of the fruit preserve. The setting is a minimalist light cream surface that feels clean and boutique-style. The aesthetic is premium and tactile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2amJdJ7EoGhmqX8qeqEUnB0LFLPvNnmb_hIod67k3rj8QW9YQFAowNht1DwmGX48Fz6eSz50_xVv-OGV0-2m3pm_2L5oV7NtAZaMa_c3MwoSHRooYCpyzi5fajLeKCfLW3l43_eGh0j1qhnSMuNECRejzJpfb9gCTLZ7vxxWv48zO5ZAq15uJMbaEjNcsTy2he82rIRvJ7FqDmwKP0EJ4zZ25x5FvXScPmWF0ResjtlZtc9l8w0BlFQWUzWFLPlTsroG1hYMB0bc"/>
+</div>
+<div class="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-outline-variant opacity-70">
+<img class="w-full h-full object-cover" data-alt="Macro photography of fresh, ripe yellow quinces and aromatic cinnamon sticks on a linen cloth. The scene is bright and airy with high-key lighting that creates a modern light-mode farm-to-table aesthetic. Soft shadows and warm tones suggest the high quality and natural ingredients used in the artisanal process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvkgw8BKQQLxM1yqObhanfHFEtrEhtRFZ0gn1cuZl4iudu_6VV47rDvCUnk8i3B9hYFbH94-zxeFdstkVn4Yb0shVdHWsjloauLjX1EVDucx4UiAn1DBiyrsbA9J5tym29Xj8yyOsV6Z-yjN20PE3wD28rZKzfZyEusJCh2cIZ-Jj33QNbpXhM1nmGYqt2AadK4wDdDPi89sMlzXw4FXb7b-mA7srg9vmismMGXWqo631Fubtx1fRFooJHoWyZJgdYD84WzF7oRUQ"/>
+</div>
+<div class="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border border-outline-variant opacity-70">
+<img class="w-full h-full object-cover" data-alt="An open jar of quince jelly showing the crystalline and thick consistency of the preserve being lifted by a silver spoon. The light catches the jelly's surface creating sparkling highlights. The color palette is dominated by deep reds and warm creams, conveying a luxurious culinary experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfGfCgIB-dfZxlsYqC5ldVeojF1wdjIrYYFRB6q6rGveoal1KNWz0gHFWoFnVzCmbyDfL5Tj3CgkNM0RoV4lns_qbqo-Wx0hRg6_f1OKIFd42y2te4UiX8Gf_Jnzrhdg85-d7PYSQuUDCyXKEpAEjR3LC5AlSMr8lutlVS5jgm0GdYfcF642FPCsXgpsJbUC7qROb3Y7CahPynwW-a3uFCmvBFNBBJtmTzXstJz0kcYhWZw8OxeBSC4bHK-vno_uNoBNWxHrgYaig"/>
+</div>
+</div>
+</section>
+<!-- Product Info -->
+<section class="px-6 py-6">
+<h2 class="font-headline-lg text-headline-lg text-text-dark mb-2">Jalea de Membrillo</h2>
+<div class="flex items-end gap-3 mb-4">
+<span class="font-price-lg text-price-lg text-primary">Q 65.00</span>
+<span class="font-body-md text-text-muted line-through mb-1">Q 80.00</span>
+</div>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                Nuestra receta familiar desde 1962. Elaborada con frutos seleccionados de nuestros propios huertos, cocida lentamente para preservar el aroma y color rubí natural. Perfecta para maridar con quesos maduros o pan artesanal.
+            </p>
+</section>
+<!-- Availability by Branch -->
+<section class="px-6 py-8 bg-card-cream/50">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="store">store</span>
+<h3 class="font-headline-md text-headline-md">Disponibilidad por sucursal</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Zona 10 (Principal)</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Antigua Guatemala</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Cayalá</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-warning-amber"></div>
+<div class="w-2 h-2 rounded-full bg-warning-amber"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Xela Centro</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Puerto Barrios</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-error-red"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/60 rounded-lg border border-[#8B0000]/5">
+<span class="font-medium text-text-dark">Cobán Plaza</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-success-green"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+<div class="w-2 h-2 rounded-full bg-stone-200"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- "Te puede gustar" Carousel -->
+<section class="py-10">
+<h3 class="px-6 font-headline-md text-headline-md text-text-dark mb-6">Te puede gustar</h3>
+<div class="flex gap-4 overflow-x-auto scrollbar-hide px-6">
+<div class="w-48 flex-shrink-0 bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(139,0,0,0.08)] border border-[#8B0000]/5">
+<div class="h-32 bg-card-cream overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist product shot of a jar of apricot preserve labeled El Membrillo. The jar sits on a clean, light-filled marble countertop with soft morning sunlight casting elegant shadows. The color theme features warm oranges and creamy whites, reflecting a premium boutique food brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcF71WGBqTE6rv7inubSQ-Wz8DgjwXx5vSyuhjBJNugfumIedJJY18H4fSyrUzN4V54oDRatI8eco6o272doTXyTXQJ-FGeFGigCqV0uhFpi9u80ob0EJL4WBGOpSh9141SWjRBlatZe9jQlRUPAYDXYhG8ZDxjBb2gXtrJHCVNq44UA4S9XwBDZ9UGfJyivMrVlzsiC8ZCBDmFoRMZ7gbskHIMH6OdF7oJ1nPg_kKpTKBW93BO5qNVcnWGbHuUgdLUBIHEssVk5U"/>
+</div>
+<div class="p-3">
+<h4 class="font-headline-md text-sm text-text-dark mb-1">Jalea de Albaricoque</h4>
+<span class="font-price-lg text-sm text-primary">Q 70.00</span>
+</div>
+</div>
+<div class="w-48 flex-shrink-0 bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(139,0,0,0.08)] border border-[#8B0000]/5">
+<div class="h-32 bg-card-cream overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A bottle of artisanal honey from El Membrillo with a wax-sealed cap and a rustic twine tag. The lighting is warm and golden, highlighting the viscous texture of the honey. The background shows a soft-focus country kitchen, creating an atmosphere of tradition, quality, and artisan craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi51qDEtV39VIiDnRIB1ph6j5w7EIkn5QKSgXoaLSNOeoyTQ7bFxTvCK3hXLcBYrRbS_WTv7qEAoH_P0NBfb4wf312AnSXZuj_-5o9IzpBmH2sh7GW0GRgOC2tvPnFT32DlOwopJA2J9HuWJl5xO381kOi7ua9e6cdRX_78d_bQ19gv7x6VJsQK-QCRNttUQ5hxBl2sr_QfW52xQ42KjYhWXOJ5gIgSbk9ckvhZ5M8RjMiq6R01bt-jMZu_uqY-yc3slsO7kDr270"/>
+</div>
+<div class="p-3">
+<h4 class="font-headline-md text-sm text-text-dark mb-1">Miel de Abeja Pura</h4>
+<span class="font-price-lg text-sm text-primary">Q 55.00</span>
+</div>
+</div>
+<div class="w-48 flex-shrink-0 bg-white rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(139,0,0,0.08)] border border-[#8B0000]/5">
+<div class="h-32 bg-card-cream overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-end gift box from El Membrillo containing three small jars of different fruit preserves nestled in wood shavings. The presentation is elegant and minimalist, using a palette of wine red and cream. The scene is illuminated by soft, professional studio lighting that emphasizes the boutique nature of the product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDntEqlL9U5Fum6CM4Q6nPobm8qId80C9R7lHecX1ftTVrxRQeVjcyyYiwB2it3v30uFGSm8xXcwjPs1UFAD7OYWNGsEjtTsJ106WrI8dAMupDfjkQxnXTkMAvNqHTsaB0fiZiyyMH4r52XZgpgPLXLSbtef2h3mBJfbLHmE6Wm44GXFRYWDsFvj3thqSQ53mW-88R5UVG8Lf8Icrebx-xx21jIfh8rTTN3fq2sW7Ww79Qts2C78C2rVIQu8ZNVQtllBU004k8NXwI"/>
+</div>
+<div class="p-3">
+<h4 class="font-headline-md text-sm text-text-dark mb-1">Trío Artesanal Mini</h4>
+<span class="font-price-lg text-sm text-primary">Q 120.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Customer Reviews -->
+<section class="px-6 py-8 mb-10 border-t border-outline-variant/30">
+<h3 class="font-headline-md text-headline-md text-text-dark mb-6">Reseñas de clientes</h3>
+<div class="space-y-6">
+<div class="border-b border-outline-variant/20 pb-4">
+<div class="flex justify-between items-center mb-2">
+<span class="font-bold text-text-dark italic">María Fernanda G.</span>
+<div class="flex text-warning-amber">
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant italic">"El sabor es idéntico al que mi abuela solía hacer. Se nota la calidad de la fruta."</p>
+</div>
+<div class="border-b border-outline-variant/20 pb-4">
+<div class="flex justify-between items-center mb-2">
+<span class="font-bold text-text-dark italic">Carlos R.</span>
+<div class="flex text-warning-amber">
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" data-icon="star">star</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant italic">"Excelente para acompañar con un buen queso de capas. Muy recomendada."</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom CTA -->
+<div class="fixed bottom-16 left-0 w-full px-6 py-4 bg-bg-cream/80 backdrop-blur-md z-40 border-t border-outline-variant/20">
+<button class="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 active:scale-95 transition-all transform hover:bg-primary-hover">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span>Agregar al carrito</span>
+</button>
+</div>
+<!-- BottomNavBar -->
+<nav class="bg-[#FAF6F0] border-t border-[#D4A574]/20 shadow-[0_-4px_20px_rgba(139,0,0,0.05)] fixed bottom-0 w-full z-50 rounded-t-3xl flex justify-around items-center px-4 py-3 pb-safe">
+<div class="flex flex-col items-center justify-center text-stone-400 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Inicio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#8B0000] font-bold hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="local_mall" style="font-variation-settings: 'FILL' 1;">local_mall</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Tienda</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Carrito</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] uppercase tracking-widest font-sans mt-1">Perfil</span>
+</div>
+</nav>
+</body></html>

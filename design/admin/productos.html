@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Productos · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="../assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/membrillo.css"/>
+</head>
+<body data-page="productos" data-title="Productos" data-eyebrow="Administración · catálogo" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+
+    <main class="p-5 md:p-8 space-y-6 max-w-[1200px]">
+
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 bg-white rounded-xl border border-outline-variant/40 px-3 py-2 flex-1 max-w-xs">
+          <span class="material-symbols-outlined text-text-muted" style="font-size:19px">search</span>
+          <input id="search" placeholder="Buscar producto…" class="bg-transparent text-sm outline-none w-full placeholder:text-text-muted/70"/>
+        </div>
+        <button id="newBtn" class="btn-primary ripple flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm ml-auto">
+          <span class="material-symbols-outlined" style="font-size:19px">add</span>Nuevo producto
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden">
+        <div class="overflow-x-auto no-scrollbar">
+          <table class="w-full min-w-[720px]">
+            <thead>
+              <tr class="bg-card-cream/60 text-left">
+                <th class="eyebrow text-text-muted px-5 py-3.5">Producto</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Tipo</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Precio</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Stock</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Estado</th>
+                <th class="eyebrow text-text-muted px-5 py-3.5 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="prodBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="hidden fixed inset-0 z-[120] bg-sidebar/55 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-5">
+  <div id="modalCard" class="bg-bg-cream w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl p-6 sm:p-8 shadow-2xl max-h-[92vh] overflow-y-auto no-scrollbar">
+    <div class="flex items-start justify-between mb-6">
+      <div>
+        <span class="eyebrow text-primary" id="modalEyebrow">Nuevo</span>
+        <h2 class="font-display text-2xl text-text-dark" id="modalTitle">Nuevo producto</h2>
+      </div>
+      <button id="modalClose" class="w-9 h-9 rounded-full hover:bg-primary/5 flex items-center justify-center text-text-muted"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <form id="prodForm" class="space-y-4">
+      <div class="flex items-center gap-4">
+        <div id="modalImg" class="w-20 h-20 rounded-xl bg-card-cream border border-dashed border-primary/30 flex items-center justify-center text-primary/50 overflow-hidden shrink-0">
+          <span class="material-symbols-outlined">add_a_photo</span>
+        </div>
+        <div class="flex-1">
+          <label class="block eyebrow text-text-muted mb-1.5">URL de imagen</label>
+          <input id="fImg" class="field" placeholder="https://…"/>
+        </div>
+      </div>
+      <div>
+        <label class="block eyebrow text-text-muted mb-1.5">Nombre</label>
+        <input id="fName" class="field" placeholder="Ej. Jalea de Membrillo Real"/>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5">Tipo</label>
+          <select id="fType" class="field"><option>Jalea</option><option>Mermelada</option><option>Conserva</option><option>Pack regalo</option></select>
+        </div>
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5">Precio (Q)</label>
+          <input id="fPrice" type="number" class="field" placeholder="45.00"/>
+        </div>
+      </div>
+      <div>
+        <label class="block eyebrow text-text-muted mb-1.5">Descripción</label>
+        <textarea id="fDesc" rows="3" class="field resize-none" placeholder="Receta familiar desde 1962…"></textarea>
+      </div>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <input id="fActive" type="checkbox" checked class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/30"/>
+        <span class="text-sm text-text-dark">Producto activo (visible en catálogo)</span>
+      </label>
+      <div class="flex gap-3 pt-2">
+        <button type="button" id="modalCancel" class="flex-1 py-3 rounded-xl border border-outline-variant/50 font-medium text-text-muted hover:bg-white">Cancelar</button>
+        <button type="submit" class="btn-primary ripple flex-1 py-3 rounded-xl font-semibold">Guardar producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="../assets/membrillo.js"></script>
+<script src="../assets/admin-shell.js"></script>
+<script>
+  let products = [
+    { id:1, name:"Jalea de Membrillo", type:"Jalea", price:45.00, stock:294, active:true, img:"https://lh3.googleusercontent.com/aida-public/AB6AXuAHe6rkY0AMhwY1zsScol7-q6hqtp5iJMtmJStpJOidCGzTXCi7ZYIww3G_EKCgzImesD5KhAJahtTTkf7XnB6VZdqM0QoYK1fylYJnDL2unGTSnzEpLUyDJYSqxcX79N_QUqwZEFzlYw9ugibfTt7-Uw21-WEB5FiCY7b1g3lhWcWYh6NVeCoG656x4NcHA30nF98fip7nZwGNiLlVBSUVSQIVZ8tzUMGNXQJsmYLWmaAhFiN2JB0mnektdwEUZ7bEiip5vcV1w9M" },
+    { id:2, name:"Bloque Artesano 1kg", type:"Conserva", price:78.00, stock:52, active:true, img:"https://lh3.googleusercontent.com/aida-public/AB6AXuCHLebJihSFI7Za-fwWxXT-P5rKu1f6qerGA1TUuYRiY0kqX5s8bzM2lQgKg1qB4BCedqqZnB7Y59iKSIJG5QIAqb4-HpOJW-imBZ-FohoznMAz4WOEAUnxAwsZaqznZKDcZKqGE-taXicy6s1moVbwZxrsNoxzSG4SULJnEitFnMfI5EKMqyT664B8HaJPoeE4qKV7wMxPmDkEjhQlf1gWkJV6JbTRzvnFaEbvIi2FfoXnTxzija6eUV5J5LSXNK2TpOFvwXltlh8" },
+    { id:3, name:"Mermelada de Naranja", type:"Mermelada", price:38.00, stock:96, active:true, img:"https://lh3.googleusercontent.com/aida-public/AB6AXuDbI3VREXB6Q2aqcmt0GK11L9Kfb16ECCYDXcYdWi7I3C9XRSirOedCji1C9EVrdn4wPPdV4tzppTFWUMzwVDoZuegvum193yuVXtU1wwXUPdyGEaVikuy57dEB3HINf30lSUqxkkrHPclC4AGZieFhmGWFhdmpvJ0v4qbb8momMSQj1kzJJCjalBgcjR1Rz403SejUgSFIE9OcTVx9VgcDzIHRv57ddzqDFNf7hCHzNPMjY_eJAhae5qe7AYG4qELthtfha5gCAkY" },
+    { id:4, name:"Pack Regalo Trío", type:"Pack regalo", price:52.50, stock:148, active:true, img:"https://lh3.googleusercontent.com/aida-public/AB6AXuDs5oqXIx92oeeiYHgf_UjQtSe0TUrh6Y27EYPnaMstETD0jiNJfBsvf8rax70OHjLYLL0Cj-0ybRp_c6Xicqmz-XwMZAQbG7UeLWJWCZc7kvn-jItdU9aLwhBzA1zDsRoCZrmX3Cg16CcgGjWuykhyOg_G4O4c_CbB-Ubp0Sk5BqH9IvhRl1LtvD0shhNV49eKNe7RnCSsh0jt78GOIVlsShoaI8Eax4TQmcfrBgK4u70rLH8A2FSPutAJSbGOqTqlHjDI3EBGinA" },
+    { id:5, name:"Membrillo en Barra 500g", type:"Conserva", price:59.00, stock:196, active:false, img:"https://lh3.googleusercontent.com/aida-public/AB6AXuBRLJ72uWofLDNmaW1_5n2qoC5whLDYMMG0UfX5yta9qzIgbHYsqQlj2RZj0jcA34HRtTStteZP9fpLJhBXVvBO6BR79T3V2zn3st-wwgZilUcg-TDfUDNmylISu8Vzb5WCWdzrfFQdCNqUIdcpKzGrDc8QiRW3y0s9Fnrv9HeMYDYCqOqBdF4SJZe_ckOcgmKNZT7Nw8ceng2ti4vNJvYzMB7Asjn93SOceJ9Z3l3H_L4jMDgAH4fmW7bXm9GGfdsKIY533_29mbs" },
+  ];
+
+  const body = document.getElementById("prodBody");
+  function render(filter) {
+    body.innerHTML = "";
+    products.filter(p => !filter || p.name.toLowerCase().includes(filter)).forEach(p => {
+      const tr = document.createElement("tr");
+      tr.className = "border-t border-outline-variant/20 hover:bg-card-cream/30 transition";
+      tr.innerHTML =
+        '<td class="px-5 py-3"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-lg bg-card-cream overflow-hidden shrink-0 ' + (p.active?'':'grayscale') + '"><img class="w-full h-full object-cover" src="' + p.img + '"/></div>' +
+          '<span class="text-sm font-semibold text-text-dark whitespace-nowrap">' + p.name + '</span></div></td>' +
+        '<td class="px-3 py-3"><span class="text-xs px-2.5 py-1 rounded-full bg-secondary-container/40 text-secondary font-medium">' + p.type + '</span></td>' +
+        '<td class="px-3 py-3 font-display text-lg text-primary">Q' + p.price.toFixed(2) + '</td>' +
+        '<td class="px-3 py-3 text-sm font-medium text-text-dark">' + p.stock + ' uds</td>' +
+        '<td class="px-3 py-3"><button class="toggle badge ' + (p.active?'badge-active':'badge-off') + '" data-id="' + p.id + '">' +
+          '<span class="material-symbols-outlined" style="font-size:14px">' + (p.active?'visibility':'visibility_off') + '</span>' + (p.active?'Activo':'Inactivo') + '</button></td>' +
+        '<td class="px-5 py-3"><div class="flex items-center justify-end gap-1">' +
+          '<button class="edit w-9 h-9 rounded-lg hover:bg-primary/8 flex items-center justify-center text-primary" data-id="' + p.id + '"><span class="material-symbols-outlined" style="font-size:19px">edit</span></button>' +
+          '<button class="del w-9 h-9 rounded-lg hover:bg-error-red/8 flex items-center justify-center text-error-red" data-id="' + p.id + '"><span class="material-symbols-outlined" style="font-size:19px">delete</span></button>' +
+          '</div></td>';
+      body.appendChild(tr);
+    });
+  }
+  render("");
+
+  document.getElementById("search").addEventListener("input", e => render(e.target.value.toLowerCase().trim()));
+
+  // Toggle / edit / delete
+  body.addEventListener("click", (e) => {
+    const t = e.target.closest(".toggle"), ed = e.target.closest(".edit"), de = e.target.closest(".del");
+    if (t) { const p = products.find(x=>x.id==t.dataset.id); p.active=!p.active; render(""); window.membrilloToast({type:p.active?"ok":"warn",title:p.name,body:p.active?"Ahora visible en catálogo.":"Ocultado del catálogo."}); }
+    if (ed) openModal(products.find(x=>x.id==ed.dataset.id));
+    if (de) { const p=products.find(x=>x.id==de.dataset.id); products=products.filter(x=>x.id!=de.dataset.id); render(document.getElementById("search").value.toLowerCase().trim()); window.membrilloToast({type:"warn",icon:"delete",title:"Producto eliminado",body:p.name}); }
+  });
+
+  // Modal
+  const modal = document.getElementById("modal");
+  let editingId = null;
+  function openModal(p) {
+    editingId = p ? p.id : null;
+    document.getElementById("modalEyebrow").textContent = p ? "Editar" : "Nuevo";
+    document.getElementById("modalTitle").textContent = p ? "Editar producto" : "Nuevo producto";
+    document.getElementById("fName").value = p ? p.name : "";
+    document.getElementById("fType").value = p ? p.type : "Jalea";
+    document.getElementById("fPrice").value = p ? p.price : "";
+    document.getElementById("fImg").value = p ? p.img : "";
+    document.getElementById("fActive").checked = p ? p.active : true;
+    document.getElementById("fDesc").value = "";
+    const mi = document.getElementById("modalImg");
+    mi.innerHTML = p && p.img ? '<img class="w-full h-full object-cover" src="'+p.img+'"/>' : '<span class="material-symbols-outlined">add_a_photo</span>';
+    modal.classList.remove("hidden");
+  }
+  function closeModal(){ modal.classList.add("hidden"); }
+  document.getElementById("newBtn").addEventListener("click", () => openModal(null));
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  document.getElementById("modalCancel").addEventListener("click", closeModal);
+  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  document.getElementById("fImg").addEventListener("input", e => {
+    const mi = document.getElementById("modalImg");
+    if (e.target.value) mi.innerHTML = '<img class="w-full h-full object-cover" src="'+e.target.value+'"/>';
+  });
+
+  document.getElementById("prodForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const data = {
+      name: document.getElementById("fName").value.trim() || "Producto sin nombre",
+      type: document.getElementById("fType").value,
+      price: parseFloat(document.getElementById("fPrice").value) || 0,
+      img: document.getElementById("fImg").value || "https://lh3.googleusercontent.com/aida-public/AB6AXuAHe6rkY0AMhwY1zsScol7-q6hqtp5iJMtmJStpJOidCGzTXCi7ZYIww3G_EKCgzImesD5KhAJahtTTkf7XnB6VZdqM0QoYK1fylYJnDL2unGTSnzEpLUyDJYSqxcX79N_QUqwZEFzlYw9ugibfTt7-Uw21-WEB5FiCY7b1g3lhWcWYh6NVeCoG656x4NcHA30nF98fip7nZwGNiLlVBSUVSQIVZ8tzUMGNXQJsmYLWmaAhFiN2JB0mnektdwEUZ7bEiip5vcV1w9M",
+      active: document.getElementById("fActive").checked,
+    };
+    if (editingId) {
+      const p = products.find(x=>x.id==editingId); Object.assign(p, data);
+      window.membrilloToast({type:"ok",title:"Producto actualizado",body:data.name});
+    } else {
+      products.unshift({ id: Date.now(), stock: 0, ...data });
+      window.membrilloToast({type:"ok",icon:"add",title:"Producto creado",body:data.name});
+    }
+    closeModal(); render(document.getElementById("search").value.toLowerCase().trim());
+  });
+</script>
+</body>
+</html>

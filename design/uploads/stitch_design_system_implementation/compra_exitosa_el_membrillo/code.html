@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#5a403c",
+                    "text-muted": "#6B5B4F",
+                    "secondary-fixed": "#ffdcbc",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#efbd8a",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#3d2c2a",
+                    "primary-container": "#8b0000",
+                    "bg-cream": "#FAF6F0",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#fecb97",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#614018",
+                    "inverse-on-surface": "#ffedea",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#0025c8",
+                    "outline-variant": "#e3beb8",
+                    "on-tertiary-container": "#9ea9ff",
+                    "surface-container-high": "#fee2dd",
+                    "on-surface": "#261816",
+                    "on-secondary-fixed": "#2c1700",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#00178d",
+                    "surface-container-low": "#fff0ee",
+                    "warning-amber": "#FFA726",
+                    "on-primary-container": "#ff907f",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#ffe9e6",
+                    "on-background": "#261816",
+                    "primary-hover": "#6B0000",
+                    "on-tertiary-fixed-variant": "#0d2ccc",
+                    "tertiary-fixed": "#dfe0ff",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#920703",
+                    "outline": "#8e706b",
+                    "tertiary-fixed-dim": "#bcc3ff",
+                    "primary": "#610000",
+                    "error-red": "#E53935",
+                    "secondary": "#7c572d",
+                    "success-green": "#4CAF50",
+                    "background": "#fff8f6",
+                    "surface": "#fff8f6",
+                    "on-secondary-container": "#79542a",
+                    "inverse-primary": "#ffb4a8",
+                    "surface-dim": "#efd4d0",
+                    "surface-bright": "#fff8f6",
+                    "surface-variant": "#f8dcd8",
+                    "surface-tint": "#b52619",
+                    "surface-container-highest": "#f8dcd8",
+                    "primary-fixed": "#ffdad4",
+                    "on-tertiary-fixed": "#000d60",
+                    "text-dark": "#2C1810",
+                    "card-cream": "#F5E6D3",
+                    "on-primary-fixed": "#410000"
+            },
+            "fontFamily": {
+                    "headline-md": ["Playfair Display"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Playfair Display"],
+                    "eyebrow": ["Inter"],
+                    "price-lg": ["Playfair Display"],
+                    "display-hero": ["Playfair Display"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .confetti-overlay {
+            background-image: radial-gradient(#8B0000 1px, transparent 1px), radial-gradient(#D4A574 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            opacity: 0.1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bg-cream font-body-md text-on-surface overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-[#FAF6F0]/70 backdrop-blur-xl border-b border-[#8B0000]/10 shadow-[0_4px_20px_rgba(139,0,0,0.08)] fixed top-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#8B0000]">menu</span>
+<h1 class="text-2xl font-serif font-bold text-[#8B0000] tracking-tight">El Membrillo</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#8B0000]">shopping_bag</span>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-12 px-6 max-w-md mx-auto relative">
+<!-- Confetti Decoration -->
+<div class="absolute inset-0 pointer-events-none confetti-overlay h-[500px]"></div>
+<!-- Success Header -->
+<div class="flex flex-col items-center text-center mt-8 mb-10 relative z-10">
+<div class="w-[100px] h-[100px] bg-success-green/10 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[64px] text-success-green" data-weight="fill">check_circle</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">¡Gracias por tu compra!</h2>
+<p class="font-body-md text-text-muted">Tu pedido ha sido procesado con éxito.</p>
+</div>
+<!-- Order Summary Card -->
+<div class="bg-card-cream rounded-xl p-6 shadow-[0_4px_20px_rgba(139,0,0,0.08)] border border-outline-variant/30 mb-8 relative z-10">
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-3">
+<span class="font-eyebrow text-text-muted">NÚMERO DE FACTURA</span>
+<span class="font-body-md font-semibold text-on-surface">#MEM-2024-8842</span>
+</div>
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-3">
+<span class="font-eyebrow text-text-muted">FECHA</span>
+<span class="font-body-md font-semibold text-on-surface">24 Oct, 2024</span>
+</div>
+<div class="flex justify-between items-start">
+<span class="font-eyebrow text-text-muted">SUCURSAL DE RETIRO</span>
+<div class="text-right">
+<span class="block font-body-md font-semibold text-on-surface">Boutique Los Olivos</span>
+<span class="block text-xs text-text-muted">Camino Rural Km 12, Mendoza</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary-container text-white py-4 rounded-lg font-semibold flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all mb-12">
+<span class="material-symbols-outlined">download</span>
+            Descargar factura PDF
+        </button>
+<!-- What's Next Section -->
+<section class="mb-12">
+<h3 class="font-headline-md text-headline-md text-primary mb-8 text-center italic">¿Qué sigue ahora?</h3>
+<div class="space-y-8 relative">
+<!-- Vertical Line Decor -->
+<div class="absolute left-[19px] top-4 bottom-4 w-[2px] bg-outline-variant/30"></div>
+<!-- Step 1 -->
+<div class="flex gap-6 items-start relative">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0 z-10">1</div>
+<div>
+<h4 class="font-semibold text-on-surface mb-1">Recibe tu comprobante</h4>
+<p class="text-sm text-text-muted">Hemos enviado un correo electrónico con los detalles de tu compra y el código QR de retiro.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-6 items-start relative">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0 z-10">2</div>
+<div>
+<h4 class="font-semibold text-on-surface mb-1">Retira en sucursal</h4>
+<p class="text-sm text-text-muted">Tu pedido estará listo en 24 horas hábiles. Solo necesitas presentar tu DNI y el código de compra.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-6 items-start relative">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold flex-shrink-0 z-10">3</div>
+<div>
+<h4 class="font-semibold text-on-surface mb-1">Disfruta lo artesanal</h4>
+<p class="text-sm text-text-muted">¡Y listo! Ya puedes disfrutar del sabor tradicional de El Membrillo en tu mesa.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Map -->
+<section class="mb-8">
+<h3 class="font-eyebrow text-text-muted mb-4">UBICACIÓN DE RETIRO</h3>
+<div class="rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 h-48 relative">
+<img class="w-full h-full object-cover grayscale-[0.2] sepia-[0.2]" data-alt="A stylized overhead map visualization of a rural countryside road in Mendoza, Argentina. The map features warm cream and tan tones, showing a winding road through lush green vineyards and a prominent deep red location pin. The aesthetic is artisanal and clean, matching a premium boutique brand identity with soft, natural lighting." data-location="Mendoza, Argentina" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX8YVPJPUZAIbWcEEMQHHKXrX1GDkm92_dq4rayLVhISudBHylPLUO_imSUcZgtEW2i9GIugEnQuFy3PUwQj72dtWBP8658WcDLDfcIpjNO4lFvogDhFbWYCc5Ean-MeIFX7vmfiNqeO-kUfQ56NmlMYFfSPPyPcMPE7Y5btxqg6J0t8zAas13yOaRRRMHrRbipL9zZeSvNsOftgA6syg3D0-Izdr_jOXEH8DruqQou6Pr6NRXijUqk2X2wxqBHwDXNX8CW76MbkM"/>
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">location_on</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary font-medium text-sm">
+<span class="material-symbols-outlined text-sm">directions</span>
+                Ver indicaciones en Google Maps
+            </div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-stone-100 py-12 mt-auto border-t border-stone-200">
+<div class="max-w-[1280px] mx-auto px-8">
+<div class="flex flex-col items-center text-center gap-6">
+<span class="font-serif text-xl text-[#8B0000]">El Membrillo</span>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="text-stone-500 hover:text-[#8B0000] font-serif text-xs italic transition-opacity" href="#">Historia</a>
+<a class="text-stone-500 hover:text-[#8B0000] font-serif text-xs italic transition-opacity" href="#">Sustentabilidad</a>
+<a class="text-stone-500 hover:text-[#8B0000] font-serif text-xs italic transition-opacity" href="#">Puntos de Venta</a>
+<a class="text-stone-500 hover:text-[#8B0000] font-serif text-xs italic transition-opacity" href="#">Contacto</a>
+</div>
+<p class="font-serif text-xs italic text-stone-500 mt-4">© 1962-2024 El Membrillo S.A. Artesanía en Jaleas.</p>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi cuenta · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen pb-16">
+
+<!-- Navbar -->
+<header class="sticky top-0 z-50 bg-bg-cream/80 glass-nav border-b border-primary/10 soft-shadow">
+  <div class="flex items-center justify-between px-5 md:px-8 py-4 max-w-container mx-auto">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center">
+        <span class="material-symbols-outlined text-gold ms-fill" style="font-size:20px">local_florist</span>
+      </div>
+      <span class="font-display text-xl text-primary">El Membrillo</span>
+    </a>
+    <div class="flex items-center gap-2">
+      <button class="w-10 h-10 rounded-full hover:bg-primary/5 flex items-center justify-center text-primary"><span class="material-symbols-outlined">storefront</span></button>
+      <button class="relative w-10 h-10 rounded-full hover:bg-primary/5 flex items-center justify-center text-primary">
+        <span class="material-symbols-outlined">shopping_bag</span>
+        <span class="absolute top-1 right-1.5 w-4 h-4 rounded-full bg-error-red text-white text-[10px] font-bold flex items-center justify-center">2</span>
+      </button>
+      <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm ml-1">MF</div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-container mx-auto px-5 md:px-8 py-8">
+
+  <!-- Encabezado de cuenta -->
+  <section class="relative overflow-hidden rounded-3xl cc-gradient text-white p-7 md:p-9 mb-8">
+    <div class="absolute -top-16 -right-10 w-72 h-72 rounded-full bg-white/5 blur-2xl"></div>
+    <div class="relative flex flex-col sm:flex-row sm:items-center gap-5">
+      <div class="w-20 h-20 rounded-2xl bg-gold/90 text-sidebar flex items-center justify-center font-display text-3xl shrink-0">MF</div>
+      <div class="flex-1">
+        <span class="eyebrow text-gold/90">Mi cuenta</span>
+        <h1 class="font-display text-3xl md:text-4xl mt-1">María Fernanda García</h1>
+        <p class="text-white/75 mt-1 flex items-center gap-2"><span class="material-symbols-outlined" style="font-size:17px">mail</span>maria.fernanda@correo.com</p>
+      </div>
+      <div class="flex gap-3">
+        <div class="text-center bg-white/10 rounded-2xl px-5 py-3 backdrop-blur">
+          <p class="font-display text-3xl">7</p>
+          <p class="eyebrow text-gold/90" style="font-size:9px">Pedidos</p>
+        </div>
+        <div class="text-center bg-white/10 rounded-2xl px-5 py-3 backdrop-blur">
+          <p class="font-display text-3xl">23</p>
+          <p class="eyebrow text-gold/90" style="font-size:9px">Frascos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid lg:grid-cols-[1.7fr_1fr] gap-8 items-start">
+
+    <!-- Mis pedidos -->
+    <section>
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="font-display text-2xl text-text-dark">Mis pedidos</h2>
+        <div class="flex gap-1 bg-card-cream rounded-full p-1 text-xs font-medium">
+          <button class="filter-tab active px-4 py-1.5 rounded-full" data-f="all">Todos</button>
+          <button class="filter-tab px-4 py-1.5 rounded-full text-text-muted" data-f="pending">Pendientes</button>
+          <button class="filter-tab px-4 py-1.5 rounded-full text-text-muted" data-f="paid">Pagados</button>
+        </div>
+      </div>
+
+      <div id="orderList" class="space-y-4">
+
+        <!-- Pendiente -->
+        <article class="order-card bg-white rounded-2xl soft-shadow border border-warning-amber/30 overflow-hidden" data-status="pending">
+          <div class="h-1 bg-warning-amber"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <p class="font-display text-lg text-text-dark">#MEM-2026-0847</p>
+                <p class="text-xs text-text-muted mt-0.5">28 may 2026 · Boutique Zona 10</p>
+              </div>
+              <span class="badge badge-pending"><span class="material-symbols-outlined" style="font-size:14px">schedule</span>Pago pendiente</span>
+            </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3vWDjGEHNTp4zvQzv1Qcfl_knjh8YiOwMU7FvC3cq6zTJIK8vmhQfX2Z2G69aLkevgLczhbNANzQjLy1YbYb68c4HAmlVl0XzR2a0lmaZ_Mic6ya5sXerEYx9paqzcWiGf9TGck3FfRijz6Pl2Pazw3b3kSRzCrOXfi_t0zK6LU53PmJ89MKBHUnE95jbe7bueVgyDbFsDBas3pZ1gFz6Fr6i91mmMWaxsLIj5oxy314VycmSXWnzk5R44feTmybusK-hcWKkCAI"/></div>
+              <p class="text-sm text-text-muted">3× Jalea de Membrillo · 1× Pack Regalo Trío</p>
+              <div class="ml-auto text-right">
+                <p class="eyebrow text-text-muted" style="font-size:9px">Total</p>
+                <p class="font-display text-2xl text-primary">Q187.50</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 rounded-lg bg-[#fff6e9] px-3 py-2 mb-4 text-[13px] text-[#9a6a14]">
+              <span class="material-symbols-outlined" style="font-size:18px">timer</span>
+              Reserva activa — completa el pago antes de que se libere el stock.
+            </div>
+            <div class="flex gap-3">
+              <a href="pago.html" class="btn-primary ripple flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined" style="font-size:18px">credit_card</span>Completar pago
+              </a>
+              <button class="px-4 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-medium text-text-muted hover:bg-bg-cream">Ver detalle</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pagado -->
+        <article class="order-card bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden" data-status="paid">
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <p class="font-display text-lg text-text-dark">#MEM-2026-0788</p>
+                <p class="text-xs text-text-muted mt-0.5">14 may 2026 · Boutique Zona 10</p>
+              </div>
+              <span class="badge badge-paid"><span class="material-symbols-outlined" style="font-size:14px">check_circle</span>Pagada</span>
+            </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnj_2Zy4_kPZiUyqk__8O6HNofV64gjjq_ldgPAtZEtAcEqMYPQ08WNfVjdxy4MiuzwPweoLD5KYcSSuv5fodmsp8RE5xXQkpc_BmpMnayPTPNMdTix6r1xjTH0ueqQsaXkQkubdj3nWtw9_e7pgZyY0Es9UxYI-azuSA25umoEUoCnKBMeKPNfbtTxEv9861ieRt9wEPAoMYIzqBYpqv0UuVk9fsE5thRgVBGaQr7-I2FohFM4T_Eu8oJUizWrbc0iNmnOJp0Wac"/></div>
+              <p class="text-sm text-text-muted">2× Caja de Alfajores · 1× Mermelada de Naranja</p>
+              <div class="ml-auto text-right">
+                <p class="eyebrow text-text-muted" style="font-size:9px">Total</p>
+                <p class="font-display text-2xl text-primary">Q142.00</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button class="dl-btn ripple flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 bg-card-cream text-primary border border-primary/15 hover:bg-primary/5">
+                <span class="material-symbols-outlined" style="font-size:18px">download</span>Descargar factura PDF
+              </button>
+              <button class="px-4 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-medium text-text-muted hover:bg-bg-cream">Repetir compra</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pagado -->
+        <article class="order-card bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden" data-status="paid">
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <p class="font-display text-lg text-text-dark">#MEM-2026-0701</p>
+                <p class="text-xs text-text-muted mt-0.5">2 abr 2026 · Punto Centro</p>
+              </div>
+              <span class="badge badge-paid"><span class="material-symbols-outlined" style="font-size:14px">check_circle</span>Pagada</span>
+            </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-lg bg-card-cream overflow-hidden shrink-0"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRLJ72uWofLDNmaW1_5n2qoC5whLDYMMG0UfX5yta9qzIgbHYsqQlj2RZj0jcA34HRtTStteZP9fpLJhBXVvBO6BR79T3V2zn3st-wwgZilUcg-TDfUDNmylISu8Vzb5WCWdzrfFQdCNqUIdcpKzGrDc8QiRW3y0s9Fnrv9HeMYDYCqOqBdF4SJZe_ckOcgmKNZT7Nw8ceng2ti4vNJvYzMB7Asjn93SOceJ9Z3l3H_L4jMDgAH4fmW7bXm9GGfdsKIY533_29mbs"/></div>
+              <p class="text-sm text-text-muted">5× Membrillo en Barra 500g</p>
+              <div class="ml-auto text-right">
+                <p class="eyebrow text-text-muted" style="font-size:9px">Total</p>
+                <p class="font-display text-2xl text-primary">Q295.00</p>
+              </div>
+            </div>
+            <div class="flex gap-3">
+              <button class="dl-btn ripple flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 bg-card-cream text-primary border border-primary/15 hover:bg-primary/5">
+                <span class="material-symbols-outlined" style="font-size:18px">download</span>Descargar factura PDF
+              </button>
+              <button class="px-4 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-medium text-text-muted hover:bg-bg-cream">Repetir compra</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Anulada -->
+        <article class="order-card bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden opacity-80" data-status="void">
+          <div class="p-5">
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div>
+                <p class="font-display text-lg text-text-dark">#MEM-2026-0655</p>
+                <p class="text-xs text-text-muted mt-0.5">18 mar 2026 · Boutique Zona 10</p>
+              </div>
+              <span class="badge badge-void"><span class="material-symbols-outlined" style="font-size:14px">block</span>Anulada</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-card-cream overflow-hidden shrink-0 grayscale"><img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm7ofqdeip5LAaaXUIxqYpDpT6c4n0eEurWe3OZMhiERLkuBj7MoVM5hH_E6966GK1Tkw9s0l3XKEMcqnVqpVXpWVYtu0QoNO84yB-o0UfMI9XZ3FsK3qUTEg_i7yYG1bkAABTlejazZ7Zs8cliIK3EAvffTF_UYvO90XiYdu7E0hLuSxrUBQxb8eAY6ae7SJVQmpGN3C1ImwAGmSE4UONudU-mwVS2TX9J4p3nKRr8brBnVM50RAbpbAJE9zWI3Clpn5CCJ1Aauw"/></div>
+              <p class="text-sm text-text-muted">1× Dúo de Jaleas Especiales · reserva expirada</p>
+              <div class="ml-auto text-right">
+                <p class="eyebrow text-text-muted" style="font-size:9px">Total</p>
+                <p class="font-display text-2xl text-text-muted line-through">Q82.00</p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Empty state (oculto, demostrable) -->
+      <div id="emptyState" class="hidden text-center py-16">
+        <div class="w-24 h-24 mx-auto rounded-full bg-card-cream flex items-center justify-center mb-5">
+          <span class="material-symbols-outlined text-primary/60" style="font-size:48px">inventory_2</span>
+        </div>
+        <h3 class="font-display text-2xl text-text-dark mb-2">Aún no hay pedidos aquí</h3>
+        <p class="text-text-muted max-w-sm mx-auto mb-6">Cuando hagas tu primera compra artesanal, aparecerá en esta sección.</p>
+        <a href="index.html" class="btn-primary ripple inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm"><span class="material-symbols-outlined" style="font-size:18px">storefront</span>Explorar catálogo</a>
+      </div>
+    </section>
+
+    <!-- Perfil editable -->
+    <aside class="space-y-5 lg:sticky lg:top-24">
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-6">
+        <div class="flex items-center justify-between mb-5">
+          <h3 class="font-display text-xl text-text-dark">Datos de perfil</h3>
+          <button id="editToggle" class="text-xs font-semibold text-primary flex items-center gap-1 hover:text-primary-hover"><span class="material-symbols-outlined" style="font-size:16px">edit</span>Editar</button>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="block eyebrow text-text-muted mb-1.5">Nombre</label>
+            <input class="pf field" value="María Fernanda García" disabled/>
+          </div>
+          <div>
+            <label class="block eyebrow text-text-muted mb-1.5">Teléfono</label>
+            <input class="pf field" value="+502 5512 7788" disabled/>
+          </div>
+          <div>
+            <label class="block eyebrow text-text-muted mb-1.5">NIT para factura</label>
+            <input class="pf field" value="1234567-0" disabled/>
+          </div>
+          <button id="saveProfile" class="hidden btn-primary ripple w-full py-2.5 rounded-xl text-sm font-semibold">Guardar cambios</button>
+        </div>
+      </div>
+
+      <div class="bg-card-cream rounded-2xl p-6 border border-primary/5">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="material-symbols-outlined text-primary">favorite</span>
+          <h3 class="font-display text-lg text-text-dark">Sucursal favorita</h3>
+        </div>
+        <p class="font-semibold text-text-dark">Boutique Zona 10 (Casa Matriz)</p>
+        <p class="text-sm text-text-muted">Av. de las Jaleas 1962, Ciudad de Guatemala</p>
+        <button class="mt-4 text-sm font-semibold text-primary flex items-center gap-1 hover:text-primary-hover">Cambiar sucursal <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span></button>
+      </div>
+
+      <button class="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-outline-variant/50 text-sm font-medium text-text-muted hover:bg-white">
+        <span class="material-symbols-outlined" style="font-size:18px">logout</span>Cerrar sesión
+      </button>
+    </aside>
+  </div>
+</main>
+
+<script src="assets/membrillo.js"></script>
+<script>
+  // Filtros
+  const tabs = document.querySelectorAll(".filter-tab");
+  const cards = document.querySelectorAll(".order-card");
+  const empty = document.getElementById("emptyState");
+  tabs.forEach(t => t.addEventListener("click", function () {
+    tabs.forEach(x => { x.classList.remove("active","bg-primary","text-white"); x.classList.add("text-text-muted"); });
+    this.classList.add("active","bg-primary","text-white"); this.classList.remove("text-text-muted");
+    const f = this.dataset.f;
+    let visible = 0;
+    cards.forEach(c => {
+      const show = f === "all" || c.dataset.status === f;
+      c.style.display = show ? "" : "none";
+      if (show) visible++;
+    });
+    empty.classList.toggle("hidden", visible > 0);
+  }));
+  // estilo activo inicial
+  document.querySelector(".filter-tab.active").classList.add("bg-primary","text-white");
+  document.querySelector(".filter-tab.active").classList.remove("text-text-muted");
+
+  // Descargar PDF (demo)
+  document.querySelectorAll(".dl-btn").forEach(b => b.addEventListener("click", () => {
+    window.membrilloToast({ type: "ok", icon: "download", title: "Generando factura PDF", body: "Tu descarga comenzará en un momento." });
+  }));
+
+  // Editar perfil
+  const edit = document.getElementById("editToggle");
+  const save = document.getElementById("saveProfile");
+  const fields = document.querySelectorAll(".pf");
+  let editing = false;
+  edit.addEventListener("click", () => {
+    editing = !editing;
+    fields.forEach(f => f.disabled = !editing);
+    save.classList.toggle("hidden", !editing);
+    edit.innerHTML = editing ? '<span class="material-symbols-outlined" style="font-size:16px">close</span>Cancelar' : '<span class="material-symbols-outlined" style="font-size:16px">edit</span>Editar';
+    if (editing) fields[0].focus();
+  });
+  save.addEventListener("click", () => {
+    editing = false; fields.forEach(f => f.disabled = true); save.classList.add("hidden");
+    edit.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px">edit</span>Editar';
+    window.membrilloToast({ type: "ok", title: "Perfil actualizado", body: "Tus datos se guardaron correctamente." });
+  });
+</script>
+</body>
+</html>

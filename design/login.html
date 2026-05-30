@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Iniciar sesión · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen">
+
+<div class="min-h-screen lg:grid lg:grid-cols-[1.05fr_1fr]">
+
+  <!-- Panel ilustración (desktop) -->
+  <aside class="relative hidden lg:flex flex-col justify-between p-12 overflow-hidden cc-gradient text-white">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white/5 blur-2xl"></div>
+    <div class="absolute bottom-10 -left-16 w-72 h-72 rounded-full bg-black/20 blur-2xl"></div>
+
+    <div class="relative flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl bg-white/12 backdrop-blur flex items-center justify-center">
+        <span class="material-symbols-outlined text-gold ms-fill">local_florist</span>
+      </div>
+      <div>
+        <p class="font-display text-2xl leading-none">El Membrillo</p>
+        <p class="eyebrow text-gold/90 mt-1" style="font-size:10px">Jaleas Artesanales · 1962</p>
+      </div>
+    </div>
+
+    <div class="relative max-w-md">
+      <span class="eyebrow text-gold/90">Portal de clientes</span>
+      <h1 class="font-display text-5xl leading-[1.05] mt-3 mb-5">Sabor que cuenta historias.</h1>
+      <p class="text-white/75 text-lg leading-relaxed">Entra a tu cuenta para seguir tus pedidos, reservar stock en tu sucursal favorita y descargar tus facturas.</p>
+
+      <div class="mt-10 flex items-center gap-5">
+        <div class="flex -space-x-3">
+          <span class="w-10 h-10 rounded-full border-2 border-[#6b0000] bg-gold/90 flex items-center justify-center text-sidebar text-xs font-bold">MF</span>
+          <span class="w-10 h-10 rounded-full border-2 border-[#6b0000] bg-[#caa] flex items-center justify-center text-sidebar text-xs font-bold">CR</span>
+          <span class="w-10 h-10 rounded-full border-2 border-[#6b0000] bg-white/90 flex items-center justify-center text-sidebar text-xs font-bold">+9</span>
+        </div>
+        <p class="text-sm text-white/70">Más de 12.000 frascos<br/>entregados este año.</p>
+      </div>
+    </div>
+
+    <div class="relative flex items-center gap-2 text-white/60 text-xs">
+      <span class="material-symbols-outlined" style="font-size:16px">lock</span>
+      Conexión segura · SSL simulado
+    </div>
+  </aside>
+
+  <!-- Panel formulario -->
+  <main class="flex flex-col justify-center px-6 py-10 sm:px-10 lg:px-16">
+    <div class="w-full max-w-[420px] mx-auto">
+
+      <!-- Logo móvil -->
+      <div class="lg:hidden flex items-center gap-3 mb-10">
+        <div class="w-11 h-11 rounded-xl bg-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-gold ms-fill">local_florist</span>
+        </div>
+        <div>
+          <p class="font-display text-xl leading-none text-primary">El Membrillo</p>
+          <p class="eyebrow text-text-muted mt-1" style="font-size:9px">Jaleas Artesanales · 1962</p>
+        </div>
+      </div>
+
+      <span class="eyebrow text-primary">Bienvenido de vuelta</span>
+      <h2 class="font-display text-4xl text-text-dark mt-2 mb-2">Inicia sesión</h2>
+      <p class="text-text-muted mb-8">¿No tienes cuenta? <a href="registro.html" class="text-primary font-semibold hover:text-primary-hover underline decoration-gold/60 underline-offset-2">Regístrate aquí</a></p>
+
+      <!-- Banner de error (oculto) -->
+      <div id="errBanner" class="hidden mb-5 flex items-start gap-3 rounded-xl bg-[#fff0ee] border border-error-red/30 px-4 py-3">
+        <span class="material-symbols-outlined text-error-red" style="font-size:20px">info</span>
+        <p class="text-sm text-[#8a2c28]">Correo o contraseña incorrectos. Revisa tus datos e inténtalo de nuevo.</p>
+      </div>
+
+      <form id="loginForm" novalidate class="space-y-5">
+        <div>
+          <label class="block eyebrow text-text-muted mb-1.5 ml-1">Correo electrónico</label>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" style="font-size:20px">mail</span>
+            <input id="email" type="email" autocomplete="email" placeholder="tu@correo.com" class="field pl-11" value="maria.fernanda@correo.com"/>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5 ml-1">
+            <label class="block eyebrow text-text-muted">Contraseña</label>
+            <a href="#" class="text-xs text-primary hover:text-primary-hover font-medium">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" style="font-size:20px">lock</span>
+            <input id="password" type="password" autocomplete="current-password" placeholder="••••••••" class="field pl-11 pr-11" value="membrillo62"/>
+            <button type="button" id="togglePw" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary p-1">
+              <span class="material-symbols-outlined" style="font-size:20px">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-2.5 cursor-pointer select-none">
+          <input type="checkbox" id="remember" checked class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/30"/>
+          <span class="text-sm text-text-muted">Recordarme en este dispositivo</span>
+        </label>
+
+        <button type="submit" id="submitBtn" class="btn-primary ripple w-full py-3.5 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2">
+          <span class="btn-label">Entrar a mi cuenta</span>
+          <span class="material-symbols-outlined btn-label" style="font-size:19px">arrow_forward</span>
+        </button>
+      </form>
+
+      <div class="flex items-center gap-4 my-7">
+        <div class="h-px flex-1 bg-outline-variant/50"></div>
+        <span class="text-xs text-text-muted">o continúa con</span>
+        <div class="h-px flex-1 bg-outline-variant/50"></div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button class="lift flex items-center justify-center gap-2 py-3 rounded-xl bg-white border border-outline-variant/50 text-sm font-medium text-text-dark">
+          <span class="material-symbols-outlined text-primary" style="font-size:19px">storefront</span> Invitado
+        </button>
+        <button class="lift flex items-center justify-center gap-2 py-3 rounded-xl bg-white border border-outline-variant/50 text-sm font-medium text-text-dark">
+          <span class="material-symbols-outlined text-primary" style="font-size:19px">call</span> Teléfono
+        </button>
+      </div>
+
+      <p class="text-center text-xs text-text-muted mt-9">Al continuar aceptas nuestros <a href="#" class="text-primary underline">Términos</a> y <a href="#" class="text-primary underline">Privacidad</a>.</p>
+    </div>
+  </main>
+</div>
+
+<script src="assets/membrillo.js"></script>
+<script>
+  const pw = document.getElementById("password");
+  document.getElementById("togglePw").addEventListener("click", function () {
+    const show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    this.querySelector("span").textContent = show ? "visibility_off" : "visibility";
+  });
+
+  const form = document.getElementById("loginForm");
+  const btn = document.getElementById("submitBtn");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    document.getElementById("errBanner").classList.add("hidden");
+    const labels = btn.querySelectorAll(".btn-label");
+    labels.forEach(l => l.style.display = "none");
+    btn.insertAdjacentHTML("beforeend", '<span class="ld material-symbols-outlined animate-spin" style="font-size:21px">progress_activity</span>');
+    btn.disabled = true;
+    setTimeout(function () {
+      // demo: contraseña correcta = membrillo62
+      if (pw.value === "membrillo62") {
+        window.location.href = "mi-cuenta.html";
+      } else {
+        btn.querySelector(".ld")?.remove();
+        labels.forEach(l => l.style.display = "");
+        btn.disabled = false;
+        document.getElementById("errBanner").classList.remove("hidden");
+        document.getElementById("email").classList.add("is-error");
+        pw.classList.add("is-error");
+      }
+    }, 1100);
+  });
+</script>
+</body>
+</html>

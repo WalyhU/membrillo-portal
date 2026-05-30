@@ -25,47 +25,48 @@
 - Stack moderno con costo ~0:
   - FastAPI (Python) — backend en horas, no meses
   - MySQL en Docker — un comando, sin instalación
-  - Bootstrap CDN — UI lista
+  - Tailwind CDN — UI premium consistente
   - SSE — stock tiempo real sin WebSockets ni infra extra
 - **De 6 meses → días**
+- Funciones completas: login con roles, reserva de stock, pago con tarjeta simulado y panel admin.
 
-## Slide 5 — Arquitectura
+## Slide 5 — Arquitectura (servicios separados, misma API)
 ```
-[Cliente Web] -- HTTP --> [FastAPI :8000] -- ORM --> [Docker MySQL :3306]
-       ^                        |
-       +----- SSE /stream ------+
-       |
-       +-- ngrok tunnel --> público
+[web :8080  e-commerce]  ─┐
+                          ├─ fetch /api ─> [API FastAPI :8000] ─ ORM ─> [MySQL :3306]
+[admin :8081  panel]     ─┘                      └─ SSE /api/stream/stock (público)
 ```
-- Un solo `docker compose up` levanta toda la base de datos.
-- Aplicación corre local o también en contenedor.
+- **3 servicios independientes** en `docker compose`: tienda (web), panel (admin) y API JSON. Cada uno en su propio origen, todos contra la **misma API**.
+- Auth por **token Bearer** (CORS) — el panel admin está aislado del e-commerce.
+- Carrito en el navegador (localStorage); el checkout manda los items a la API.
+- Un solo `docker compose up -d --build` levanta todo (mysql, api, web, admin, phpMyAdmin).
 
 ## Slide 6 — Modelo de datos
-- 7 tablas:
-  - `tipo_producto`
-  - `producto`
+- 10 tablas:
+  - `tipo_producto`, `producto`
   - `sucursal` (las 6 del caso)
-  - `stock_sucursal` (relación M:M con existencia)
-  - `cliente`
+  - `stock_sucursal` (M:M con `existencia` + `reservado`)
+  - `cliente`, `usuario` (login + rol)
   - `factura` + `detalle_factura`
-- Cumple la **restricción 2** del PDF y la extiende con sucursales.
+  - `pago` (pasarela simulada), `reserva` (hold de stock con TTL)
+- Cumple la **restricción 2** del PDF y la extiende con sucursales, usuarios, pagos y reservas.
 - Diagrama ER (mostrar pizarra o screenshot phpMyAdmin).
 
 ## Slide 7 — Stock en tiempo real (Server-Sent Events)
 - Problema: cliente A compra → cliente B debe ver stock actualizado **sin recargar**.
 - Solución: SSE — canal HTTP unidireccional servidor→cliente.
-- En el momento del checkout, el backend:
+- Al iniciar el pago, el backend:
   1. Bloquea fila con `SELECT...FOR UPDATE` (concurrencia segura).
-  2. Descuenta stock.
-  3. Publica evento al broker.
-  4. Todos los clientes conectados reciben el cambio.
+  2. **Reserva** stock (sube `reservado`, no toca `existencia`) con TTL de 15 min.
+  3. Publica evento al broker → todos ven bajar el **disponible**.
+  4. Si el pago se aprueba, descuenta `existencia`; si se rechaza o expira, libera la reserva.
 - Frontend: badge se actualiza con destello amarillo.
 
 ## Slide 8 — Demo en vivo
-- Catálogo
-- Detalle producto con stock por sucursal
-- Carrito → checkout → factura PDF descargable
-- Admin para ajustar stock
+- Registro/login de cliente
+- Catálogo (con filtros) → detalle con disponibilidad por sucursal
+- Carrito → checkout → **reserva** (disponible baja en otra pestaña) → **pago con tarjeta** (animada) → factura PDF
+- Panel admin: dashboard con métricas/gráfica, inventario, CRUD productos, pedidos, usuarios
 - **Simulador de ventas** corriendo en otra terminal → stock baja en pantalla
 
 ## Slide 9 — Despliegue
@@ -81,11 +82,11 @@
 | Mantenimiento | Alto | Bajo (un compose file) |
 
 ## Slide 11 — Próximos pasos
-- Pasarela de pagos real (Stripe / Recurrente / NeoNet)
+- Pasarela de pagos **real** (Stripe / Recurrente / NeoNet) — hoy está simulada con validación Luhn
 - Dominio propio (`elmembrillo.com.gt`)
 - Catálogo extendido con más fotos
-- Login de clientes recurrentes
-- Reportes para junta directiva
+- Notificaciones por email de la factura
+- Reportes avanzados para junta directiva
 
 ## Slide 12 — Cierre
 - Lección: con vibecoding + plataformas, una emergencia se resuelve en **días**, no meses.

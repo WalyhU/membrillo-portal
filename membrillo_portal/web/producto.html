@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Producto · El Membrillo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body class="bg-bg-cream text-on-surface min-h-screen">
+
+<header class="sticky top-0 z-30 glass-nav bg-primary/95 text-white">
+  <div class="max-w-container mx-auto px-5 md:px-8 h-16 flex items-center gap-5">
+    <a href="index.html" class="flex items-center gap-2 font-display text-xl"><span class="material-symbols-outlined text-gold ms-fill">local_florist</span> El Membrillo</a>
+    <a href="carrito.html" class="relative flex items-center gap-2 bg-white/10 hover:bg-white/20 rounded-full px-4 py-2 text-sm ml-auto">
+      <span class="material-symbols-outlined" style="font-size:20px">shopping_cart</span><span class="hidden sm:inline">Carrito</span>
+      <span data-cart-count class="bg-gold text-sidebar font-bold text-xs rounded-full px-2 py-0.5">0</span>
+    </a>
+  </div>
+</header>
+
+<main class="max-w-container mx-auto px-5 md:px-8 py-10">
+  <a href="index.html" class="text-sm text-text-muted hover:text-primary flex items-center gap-1 mb-6"><span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> Volver al catálogo</a>
+  <div id="detalle" class="grid md:grid-cols-2 gap-10"></div>
+</main>
+
+<div id="toast-zone"></div>
+<script src="assets/membrillo.js"></script>
+<script src="assets/api.js"></script>
+<script>
+(async function () {
+  const id = parseInt(new URLSearchParams(location.search).get("id"), 10);
+  const box = document.getElementById("detalle");
+  if (!id) { box.innerHTML = "Producto no especificado."; return; }
+  let p;
+  try { p = await Mem.apiFetch("/productos/" + id); }
+  catch (e) { box.innerHTML = '<p class="text-error-red">No se encontró el producto.</p>'; return; }
+
+  function nivel(d) { return d === 0 ? "badge-void" : (d < 20 ? "badge-pending" : "badge-paid"); }
+  const filas = p.stock.map((s) =>
+    '<tr class="border-b border-outline-variant/20 last:border-0">' +
+      '<td class="py-2 font-medium">' + s.sucursal_nombre + '</td>' +
+      '<td class="py-2 text-right"><span class="badge ' + nivel(s.disponible) + '" data-disponible="' + p.id + '-' + s.sucursal_id + '">' + s.disponible + '</span>' +
+      (s.reservado ? ' <span class="text-xs text-text-muted">(' + s.reservado + ' reserv.)</span>' : '') + '</td>' +
+    '</tr>').join("");
+
+  box.innerHTML =
+    '<div class="rounded-2xl overflow-hidden bg-card-cream aspect-square flex items-center justify-center soft-shadow">' +
+      (p.imagen_url ? '<img src="' + p.imagen_url + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"/>' : '') +
+      '<span class="material-symbols-outlined text-primary/25" style="font-size:90px">local_florist</span></div>' +
+    '<div>' +
+      '<span class="eyebrow text-text-muted">' + p.tipo_nombre + '</span>' +
+      '<h1 class="font-display text-4xl mt-2">' + p.nombre + '</h1>' +
+      '<p class="text-text-muted mt-4 leading-relaxed">' + (p.descripcion || '') + '</p>' +
+      '<div class="flex items-end gap-6 mt-6">' +
+        '<div><div class="text-xs text-text-muted">Precio</div><span class="font-display text-4xl font-bold text-primary">' + Mem.money(p.precio) + '</span></div>' +
+        '<div><div class="text-xs text-text-muted">Disponible</div><span class="badge badge-paid text-base" data-disponible-total="' + p.id + '">' + p.disponible_total + '</span></div>' +
+      '</div>' +
+      '<div class="mt-7 bg-white rounded-2xl border border-outline-variant/30 soft-shadow p-5">' +
+        '<h3 class="eyebrow text-text-muted mb-3">Disponibilidad por sucursal · en vivo</h3>' +
+        '<table class="w-full text-sm"><tbody>' + filas + '</tbody></table></div>' +
+      '<div class="mt-6 flex items-end gap-4 bg-card-cream/60 rounded-2xl p-5">' +
+        '<div><label class="block text-xs font-semibold mb-1">Cantidad</label>' +
+        '<input id="qty" type="number" min="1" value="1" class="field" style="width:90px"/></div>' +
+        '<button id="addBtn" ' + (p.disponible_total === 0 ? 'disabled' : '') + ' class="ripple flex-1 flex items-center justify-center gap-2 btn-primary disabled:opacity-40 rounded-xl py-3 font-semibold">' +
+        '<span class="material-symbols-outlined">add_shopping_cart</span> Agregar al carrito</button></div>' +
+    '</div>';
+
+  document.getElementById("addBtn")?.addEventListener("click", () => {
+    const q = Math.max(1, parseInt(document.getElementById("qty").value, 10) || 1);
+    Mem.addToCart(p.id, q);
+    window.membrilloToast({ type: "ok", icon: "shopping_basket", title: "✓ " + p.nombre, body: q + " agregada(s) al carrito." });
+  });
+
+  const es = new EventSource(Mem.API + "/stream/stock");
+  es.addEventListener("stock_update", (ev) => {
+    const d = JSON.parse(ev.data);
+    if (d.producto_id !== p.id) return;
+    const cell = document.querySelector('[data-disponible="' + d.producto_id + '-' + d.sucursal_id + '"]');
+    if (cell) { cell.textContent = d.disponible; cell.classList.add("stock-flash"); setTimeout(() => cell.classList.remove("stock-flash"), 600); }
+    const tot = document.querySelector('[data-disponible-total="' + d.producto_id + '"]');
+    if (tot) tot.textContent = d.disponible_total;
+  });
+})();
+</script>
+</body>
+</html>

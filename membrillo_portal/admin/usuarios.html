@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Usuarios · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body data-page="usuarios" data-title="Usuarios" data-eyebrow="Administración · accesos" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+    <main class="p-5 md:p-8 space-y-6 max-w-[1100px]">
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-x-auto">
+        <table class="w-full text-sm min-w-[680px]">
+          <thead><tr class="bg-card-cream/60 text-left">
+            <th class="px-4 py-3 eyebrow text-text-muted">#</th><th class="px-4 py-3 eyebrow text-text-muted">Nombre</th>
+            <th class="px-4 py-3 eyebrow text-text-muted">Correo</th><th class="px-4 py-3 eyebrow text-text-muted text-center">Rol</th>
+            <th class="px-4 py-3 eyebrow text-text-muted">Cliente</th><th class="px-4 py-3 eyebrow text-text-muted text-center">Estado</th><th class="px-4 py-3 eyebrow text-text-muted text-right">Acciones</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="assets/membrillo.js"></script>
+<script src="assets/admin-api.js"></script>
+<script src="assets/admin-shell.js"></script>
+<script>
+(async function () {
+  if (!AdminAPI.requireAdmin()) return;
+  const tbody = document.getElementById("tbody");
+  async function load() {
+    const us = await AdminAPI.adminFetch("/admin/usuarios");
+    tbody.innerHTML = us.map((u) =>
+      '<tr class="border-t border-outline-variant/20">' +
+        '<td class="px-4 py-3 text-text-muted">' + u.id + '</td>' +
+        '<td class="px-4 py-3 font-medium">' + u.nombre + '</td>' +
+        '<td class="px-4 py-3">' + u.email + '</td>' +
+        '<td class="px-4 py-3 text-center"><span class="badge ' + (u.rol === 'admin' ? 'badge-admin' : 'badge-client') + ' capitalize">' + u.rol + '</span></td>' +
+        '<td class="px-4 py-3 text-text-muted">' + (u.cliente || '—') + '</td>' +
+        '<td class="px-4 py-3 text-center"><span class="badge ' + (u.activo ? 'badge-active' : 'badge-off') + '">' + (u.activo ? 'Activo' : 'Inactivo') + '</span></td>' +
+        '<td class="px-4 py-3 text-right"><button class="text-text-muted hover:text-text-dark" data-toggle="' + u.id + '"><span class="material-symbols-outlined" style="font-size:20px">' + (u.activo ? 'toggle_on' : 'toggle_off') + '</span></button></td>' +
+      '</tr>').join("");
+  }
+  await load();
+  tbody.addEventListener("click", async (e) => {
+    const tg = e.target.closest("[data-toggle]"); if (!tg) return;
+    await AdminAPI.adminFetch("/admin/usuarios/" + tg.dataset.toggle + "/toggle", { method: "POST" });
+    load();
+  });
+})();
+</script>
+</body>
+</html>

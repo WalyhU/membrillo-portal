@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Usuarios · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="../assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/membrillo.css"/>
+</head>
+<body data-page="usuarios" data-title="Usuarios" data-eyebrow="Administración · accesos" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+
+    <main class="p-5 md:p-8 space-y-6 max-w-[1100px]">
+
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 bg-white rounded-xl border border-outline-variant/40 px-3 py-2 flex-1 max-w-xs">
+          <span class="material-symbols-outlined text-text-muted" style="font-size:19px">search</span>
+          <input id="search" placeholder="Buscar por nombre o correo…" class="bg-transparent text-sm outline-none w-full placeholder:text-text-muted/70"/>
+        </div>
+        <div class="flex gap-1 bg-card-cream rounded-full p-1 text-xs font-medium ml-auto">
+          <button class="role-tab active px-4 py-1.5 rounded-full" data-f="all">Todos</button>
+          <button class="role-tab px-4 py-1.5 rounded-full text-text-muted" data-f="admin">Admins</button>
+          <button class="role-tab px-4 py-1.5 rounded-full text-text-muted" data-f="client">Clientes</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden">
+        <div class="overflow-x-auto no-scrollbar">
+          <table class="w-full min-w-[700px]">
+            <thead>
+              <tr class="bg-card-cream/60 text-left">
+                <th class="eyebrow text-text-muted px-5 py-3.5">Usuario</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Rol</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Cliente vinculado</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Último acceso</th>
+                <th class="eyebrow text-text-muted px-3 py-3.5">Estado</th>
+                <th class="eyebrow text-text-muted px-5 py-3.5 text-right"></th>
+              </tr>
+            </thead>
+            <tbody id="userBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="../assets/membrillo.js"></script>
+<script src="../assets/admin-shell.js"></script>
+<script>
+  let users = [
+    { id:1, name:"Sofía Guzmán", email:"sofia@elmembrillo.gt", role:"admin", linked:"—", last:"Hace 2 min", active:true },
+    { id:2, name:"Marco Antonio Díaz", email:"marco@elmembrillo.gt", role:"admin", linked:"—", last:"Ayer", active:true },
+    { id:3, name:"María F. García", email:"maria.fernanda@correo.com", role:"client", linked:"María F. García", last:"Hace 1 h", active:true },
+    { id:4, name:"Carlos Reyes", email:"carlos.reyes@correo.com", role:"client", linked:"Carlos Reyes", last:"Hace 3 d", active:true },
+    { id:5, name:"Lucía Morales", email:"lucia.morales@correo.com", role:"client", linked:"Lucía Morales", last:"Hace 1 sem", active:false },
+    { id:6, name:"Diego Estrada", email:"diego.estrada@correo.com", role:"client", linked:"Diego Estrada", last:"Hace 2 d", active:true },
+  ];
+  const colors = ["#8B0000","#7c572d","#4CAF50","#b52619","#6B5B4F","#610000"];
+  const roleBadge = r => r==="admin"
+    ? '<span class="badge badge-admin"><span class="material-symbols-outlined" style="font-size:13px">shield_person</span>Admin</span>'
+    : '<span class="badge badge-client"><span class="material-symbols-outlined" style="font-size:13px">person</span>Cliente</span>';
+
+  const body = document.getElementById("userBody");
+  let fRole = "all", q = "";
+  function initials(n){ return n.split(" ").slice(0,2).map(x=>x[0]).join("").toUpperCase(); }
+  function render() {
+    body.innerHTML = "";
+    users.filter(u => (fRole==="all"||u.role===fRole) && (!q || (u.name+u.email).toLowerCase().includes(q))).forEach((u,i) => {
+      const tr = document.createElement("tr");
+      tr.className = "border-t border-outline-variant/20 hover:bg-card-cream/30 transition";
+      tr.innerHTML =
+        '<td class="px-5 py-3.5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0 ' + (u.active?'':'opacity-40') + '" style="background:'+colors[i%colors.length]+'">' + initials(u.name) + '</div>' +
+          '<div><p class="text-sm font-semibold text-text-dark whitespace-nowrap">' + u.name + '</p><p class="text-[11px] text-text-muted">' + u.email + '</p></div></div></td>' +
+        '<td class="px-3 py-3.5">' + roleBadge(u.role) + '</td>' +
+        '<td class="px-3 py-3.5 text-sm text-text-muted">' + u.linked + '</td>' +
+        '<td class="px-3 py-3.5 text-sm text-text-muted whitespace-nowrap">' + u.last + '</td>' +
+        '<td class="px-3 py-3.5"><button class="toggle inline-flex items-center" data-id="'+u.id+'" title="Activar / desactivar">' +
+          '<span class="w-10 h-6 rounded-full relative transition ' + (u.active?'bg-success-green':'bg-outline-variant/50') + '">' +
+          '<span class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ' + (u.active?'left-[18px]':'left-0.5') + '"></span></span></button></td>' +
+        '<td class="px-5 py-3.5 text-right"><button class="w-9 h-9 rounded-lg hover:bg-primary/8 flex items-center justify-center text-text-muted ml-auto"><span class="material-symbols-outlined" style="font-size:19px">more_horiz</span></button></td>';
+      body.appendChild(tr);
+    });
+    if (!body.children.length) body.innerHTML = '<tr><td colspan="6" class="text-center py-12 text-text-muted">Sin resultados.</td></tr>';
+  }
+  render();
+
+  body.addEventListener("click", (e) => {
+    const t = e.target.closest(".toggle"); if (!t) return;
+    const u = users.find(x=>x.id==t.dataset.id); u.active=!u.active; render();
+    window.membrilloToast({ type:u.active?"ok":"warn", title:u.name, body:u.active?"Acceso habilitado.":"Acceso suspendido." });
+  });
+  const tabs = document.querySelectorAll(".role-tab");
+  tabs.forEach(t => t.addEventListener("click", function () {
+    tabs.forEach(x => { x.classList.remove("active","bg-primary","text-white"); x.classList.add("text-text-muted"); });
+    this.classList.add("active","bg-primary","text-white"); this.classList.remove("text-text-muted");
+    fRole = this.dataset.f; render();
+  }));
+  document.querySelector(".role-tab.active").classList.add("bg-primary","text-white");
+  document.querySelector(".role-tab.active").classList.remove("text-text-muted");
+  document.getElementById("search").addEventListener("input", e => { q = e.target.value.toLowerCase().trim(); render(); });
+</script>
+</body>
+</html>

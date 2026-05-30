@@ -22,34 +22,39 @@ NOMBRES = [
 
 def simular(url: str, n: int, delay: float) -> None:
     s = requests.Session()
+    s.headers.update({"Content-Type": "application/json"})
     productos = s.get(urljoin(url, "/api/productos")).json()
     if not productos:
         print("No hay productos. Verifica BD.")
         return
 
-    print(f"Simulando {n} ventas contra {url} ...")
+    print(f"Simulando {n} ventas contra {url}/api ...")
     for i in range(1, n + 1):
-        s.cookies.clear()
-        # 1-3 items
-        for _ in range(random.randint(1, 3)):
-            prod = random.choice(productos)
-            cant = random.randint(1, 4)
-            try:
-                s.post(urljoin(url, "/carrito/agregar"), data={"producto_id": prod["id"], "cantidad": cant}, allow_redirects=False)
-            except Exception as e:
-                print(f"  err agregar: {e}")
-
         cliente = random.choice(NOMBRES)
         sucursal = random.randint(1, 6)
+        items = []
+        for _ in range(random.randint(1, 3)):
+            prod = random.choice(productos)
+            items.append({"producto_id": prod["id"], "cantidad": random.randint(1, 4)})
         try:
-            r = s.post(urljoin(url, "/checkout"), data={
-                "nombre": cliente,
-                "nit": "CF",
-                "sucursal_id": sucursal,
-            }, allow_redirects=False)
-            print(f"  [{i}/{n}] {cliente} -> sucursal {sucursal} -> HTTP {r.status_code}")
+            # 1) checkout -> crea factura PENDIENTE + reserva stock
+            r = s.post(urljoin(url, "/api/checkout"), json={
+                "nombre": cliente, "nit": "CF", "sucursal_id": sucursal, "items": items,
+            })
+            if r.status_code != 200:
+                print(f"  [{i}/{n}] {cliente} -> sucursal {sucursal} -> checkout HTTP {r.status_code} (sin stock?)")
+                time.sleep(delay)
+                continue
+            fid = r.json()["factura_id"]
+            # 2) pago con tarjeta de prueba (siempre aprueba) -> confirma reserva y baja stock
+            rp = s.post(urljoin(url, f"/api/pago/{fid}"), json={
+                "metodo": "tarjeta", "numero": "4111111111111111",
+                "titular": cliente.upper(), "expiracion": "12/29", "cvv": "123",
+            })
+            estado = rp.json().get("estado", rp.status_code) if rp.content else rp.status_code
+            print(f"  [{i}/{n}] {cliente} -> sucursal {sucursal} -> factura {fid} -> {estado}")
         except Exception as e:
-            print(f"  err checkout: {e}")
+            print(f"  err venta: {e}")
 
         time.sleep(delay)
 

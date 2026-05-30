@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pedido · El Membrillo Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="assets/theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/membrillo.css"/>
+<script src="assets/config.js"></script>
+</head>
+<body data-page="pedidos" data-title="Detalle de pedido" data-eyebrow="Administración · factura" class="bg-bg-cream text-on-surface min-h-screen">
+
+<div id="admin-overlay" class="hidden fixed inset-0 bg-sidebar/50 z-40 lg:hidden"></div>
+<div class="flex min-h-screen">
+  <aside id="admin-sidebar" class="fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-sidebar shrink-0 -translate-x-full lg:translate-x-0 transition-transform duration-300"></aside>
+  <div class="flex-1 min-w-0">
+    <header id="admin-topbar" class="sticky top-0 z-30 bg-bg-cream/85 glass-nav border-b border-primary/10 flex items-center justify-between px-5 md:px-8 py-4"></header>
+    <main class="p-5 md:p-8 space-y-6 max-w-[1000px]">
+      <a href="pedidos.html" class="text-sm text-text-muted hover:text-primary flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:18px">arrow_back</span> Volver a pedidos</a>
+      <div id="cont" class="grid md:grid-cols-3 gap-6"></div>
+    </main>
+  </div>
+</div>
+
+<script src="assets/membrillo.js"></script>
+<script src="assets/admin-api.js"></script>
+<script src="assets/admin-shell.js"></script>
+<script>
+(async function () {
+  if (!AdminAPI.requireAdmin()) return;
+  const id = parseInt(new URLSearchParams(location.search).get("id"), 10);
+  const cont = document.getElementById("cont");
+  if (!id) { cont.innerHTML = "Pedido no especificado."; return; }
+  let f;
+  try { f = await AdminAPI.adminFetch("/admin/pedidos/" + id); } catch (e) { cont.innerHTML = '<p class="text-error-red">No se encontró.</p>'; return; }
+  const badge = (e) => e === "pagada" ? "badge-paid" : e === "pendiente" ? "badge-pending" : "badge-void";
+
+  cont.innerHTML =
+    '<div class="md:col-span-2 bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden">' +
+      '<div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20"><h2 class="font-display text-xl">Factura #' + String(f.id).padStart(6, "0") + '</h2><span class="badge ' + badge(f.estado) + ' capitalize">' + f.estado + '</span></div>' +
+      '<table class="w-full text-sm"><thead><tr class="bg-card-cream/50 text-left"><th class="px-5 py-3 eyebrow text-text-muted">Producto</th><th class="px-3 py-3 eyebrow text-text-muted text-center">Cant.</th><th class="px-3 py-3 eyebrow text-text-muted text-right">Precio</th><th class="px-5 py-3 eyebrow text-text-muted text-right">Subtotal</th></tr></thead><tbody>' +
+        (f.items || []).map((d) => '<tr class="border-t border-outline-variant/20"><td class="px-5 py-3 font-medium">' + d.producto + '</td><td class="px-3 py-3 text-center">' + d.cantidad + '</td><td class="px-3 py-3 text-right text-text-muted">' + AdminAPI.money(d.precio_unit) + '</td><td class="px-5 py-3 text-right font-semibold">' + AdminAPI.money(d.subtotal) + '</td></tr>').join("") +
+      '</tbody></table></div>' +
+    '<div class="space-y-4">' +
+      '<div class="bg-white rounded-2xl soft-shadow border border-outline-variant/30 p-5 text-sm"><h3 class="font-display text-lg mb-3">Cliente</h3>' +
+        '<p class="font-medium">' + (f.cliente ? f.cliente.nombre : '—') + '</p><p class="text-text-muted">NIT: ' + (f.cliente ? f.cliente.nit : '') + '</p>' +
+        (f.cliente && f.cliente.email ? '<p class="text-text-muted">' + f.cliente.email + '</p>' : '') +
+        '<p class="text-text-muted mt-2">Retiro: ' + (f.sucursal ? f.sucursal.nombre : '') + '</p><p class="text-text-muted">' + (f.fecha ? new Date(f.fecha).toLocaleString("es-GT") : '') + '</p></div>' +
+      '<div class="bg-secondary-container/25 rounded-2xl p-5 text-sm">' +
+        '<div class="flex justify-between mb-1"><span class="text-text-muted">Subtotal</span><span>' + AdminAPI.money(f.subtotal) + '</span></div>' +
+        '<div class="flex justify-between mb-1"><span class="text-text-muted">IVA</span><span>' + AdminAPI.money(f.iva) + '</span></div>' +
+        '<div class="flex justify-between mt-2 pt-2 border-t border-outline-variant/30"><span class="font-semibold">Total</span><span class="font-display text-lg font-bold text-primary">' + AdminAPI.money(f.total) + '</span></div></div>' +
+      (f.estado === "pagada" ? '<a href="' + AdminAPI.API + '/facturas/' + f.id + '/pdf" target="_blank" class="btn-primary ripple w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold"><span class="material-symbols-outlined">download</span> Descargar PDF</a>' : '') +
+    '</div>';
+})();
+</script>
+</body>
+</html>

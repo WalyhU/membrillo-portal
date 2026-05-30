@@ -7,11 +7,17 @@
 
 ## 0. Lo que vas a entregar
 
-1. **Sitio web funcional** con catálogo, carrito, checkout y factura PDF.
-2. **Stock en tiempo real** (SSE) que se actualiza solo cuando cambian existencias.
-3. **Modelo de datos propio** en MySQL (Docker) con 7 tablas: `tipo_producto`, `producto`, `sucursal`, `stock_sucursal`, `cliente`, `factura`, `detalle_factura`.
-4. **Demo en vivo** durante la presentación (con simulador de ventas que baja stock en pantalla).
-5. **Presentación** con la propuesta de la solución (outline incluido en `membrillo_portal/presentacion.md`).
+1. **Sitio web funcional** con catálogo, carrito, checkout, **pago con tarjeta simulado** y factura PDF.
+2. **Stock en tiempo real** (SSE) que se actualiza solo cuando cambian existencias o reservas.
+3. **Reserva de stock**: al iniciar el pago el stock se reserva 15 min (libera solo si no pagas). El catálogo muestra **disponible = existencia − reservado**.
+4. **Login y roles**: clientes se registran y ven su historial; el **panel admin** está protegido por rol.
+5. **Panel admin completo** (páginas separadas): dashboard con métricas + gráfica, inventario, CRUD de productos, pedidos y usuarios.
+6. **Modelo de datos propio** en MySQL (Docker), 10 tablas: las 7 originales (`tipo_producto`, `producto`, `sucursal`, `stock_sucursal`, `cliente`, `factura`, `detalle_factura`) + `usuario`, `pago`, `reserva`.
+7. **Demo en vivo** durante la presentación (simulador de ventas que baja stock en pantalla).
+8. **Presentación** con la propuesta de la solución (outline en `membrillo_portal/presentacion.md`).
+
+> **Credenciales admin por defecto** (se crean solas al iniciar la app): `admin@membrillo.gt` / `membrillo123` (configurables en `.env`).
+> **Tarjeta de prueba** que siempre aprueba el pago: `4111 1111 1111 1111`, cualquier fecha futura, CVV `123`.
 
 Cumple las 5 restricciones del PDF:
 - No se programó "desde cero" — se hizo con vibecoding asistido.
@@ -59,20 +65,21 @@ docker compose up -d
 
 Esto levanta:
 - `membrillo_mysql` — MySQL 8 en `localhost:3306` (root / membrillo).
-- `membrillo_pma` — phpMyAdmin en http://localhost:8080.
+- `membrillo_pma` — phpMyAdmin en http://localhost:8082.
 
 El **schema** y el **seed** se cargan automáticamente la primera vez (Docker corre los archivos de `sql/` al inicializar el volumen).
 
 ### Verificar que cargó bien
-1. Abre http://localhost:8080
+1. Abre http://localhost:8082
 2. Servidor: `mysql`, usuario: `root`, contraseña: `membrillo`.
-3. Selecciona `membrillo_db`. Deberías ver las 7 tablas con datos:
+3. Selecciona `membrillo_db`. Deberías ver las 10 tablas:
    - `tipo_producto` → 4 filas
    - `producto` → 7 filas
    - `sucursal` → 6 filas
-   - `stock_sucursal` → 42 filas (7×6)
+   - `stock_sucursal` → 42 filas (7×6), ahora con columna `reservado`
    - `cliente` → 1 fila (Consumidor Final)
-   - `factura`, `detalle_factura` → vacías
+   - `usuario` → 1 fila (admin, se crea al iniciar la app)
+   - `factura`, `detalle_factura`, `pago`, `reserva` → vacías
 
 > **Si el schema no cargó** (puerto 3306 ya estaba en uso por otro MySQL local), corre el fallback:
 > ```powershell
@@ -84,48 +91,72 @@ El **schema** y el **seed** se cargan automáticamente la primera vez (Docker co
 
 ---
 
-## 3. Levantar la aplicación FastAPI
+## 3. Arquitectura: 3 servicios sobre una sola API
 
-### Opción A — Local (recomendado para desarrollo y demo)
+El portal ahora está **separado en servicios distintos**, cada uno en su propia página (origen), todos contra la **misma API**:
+
+```
+[web :8080  e-commerce]  ─┐
+                          ├── fetch ──> [api :8000  FastAPI JSON] ──> [mysql :3306]
+[admin :8081  panel]     ─┘                  SSE /api/stream/stock (público)
+```
+
+| Servicio | URL | Qué es |
+|---|---|---|
+| **E-commerce** | http://localhost:8080 | Tienda para clientes (catálogo, carrito, pago) |
+| **Admin** | http://localhost:8081 | Panel de administración (login propio) |
+| **API** | http://localhost:8000/api | Backend JSON (FastAPI). Docs: http://localhost:8000/docs |
+| **phpMyAdmin** | http://localhost:8082 | Ver la base de datos |
+
+### Opción A — Todo en Docker (recomendado, un solo comando)
 
 ```powershell
 cd "E:\UMG\SEMESTRE 9\ATI\membrillo_portal"
-
-# crear entorno virtual una sola vez
-python -m venv .venv
-.venv\Scripts\activate
-
-# instalar dependencias una sola vez
-pip install -r requirements.txt
-
-# copiar config
-copy .env.example .env
-
-# correr el servidor
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+docker compose up -d --build
 ```
 
-Abre http://localhost:8000
+Levanta mysql, api, web, admin y phpMyAdmin. Abre **http://localhost:8080** (tienda) y **http://localhost:8081** (admin).
 
-### Opción B — Todo en Docker (un solo comando)
+### Opción B — API local + fronts estáticos (desarrollo)
 
 ```powershell
-docker compose --profile full up --build
+cd "E:\UMG\SEMESTRE 9\ATI\membrillo_portal"
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+copy .env.example .env
+
+# 1) API
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+# 2) en otras terminales, servir los fronts estáticos:
+python -m http.server 8080 --directory web
+python -m http.server 8081 --directory admin
 ```
 
-Esto agrega el servicio `app` al stack. Más limpio pero recompila cada cambio.
+> Los fronts usan `assets/config.js` (`window.API_BASE`) para ubicar la API. Por defecto apunta a `http://localhost:8000/api`. Si cambias el host/puerto de la API, edita ese archivo en `web/assets/` y `admin/assets/`.
 
 ---
 
 ## 4. Probar el flujo completo
 
-1. **Catálogo** http://localhost:8000 — debes ver 7 productos con stock.
-2. **Detalle** clic en cualquiera → ves stock por las 6 sucursales.
-3. **Carrito** agrega 2 productos → ve a `/carrito` → llena nombre y elige sucursal → "Confirmar y generar factura".
-4. **Factura** sale página de éxito → "Descargar PDF" → revisa el PDF.
-5. **Stock bajó**: vuelve al catálogo y al detalle del producto que compraste — el número debe ser menor.
-6. **Admin** http://localhost:8000/admin — matriz editable. Cambia un valor y guarda.
-7. **SSE en vivo**: abre dos pestañas (catálogo y admin). Cambia stock en admin → la pestaña del catálogo se actualiza sola **sin recargar**, con un destello amarillo.
+**Tienda — http://localhost:8080**
+1. **Catálogo** — 7 productos con su **disponible**. Filtra por tipo con los chips.
+2. **Registro** clic en "Ingresar" → "Regístrate" → crea una cuenta (queda la sesión guardada en el navegador).
+3. **Detalle** clic en un producto → disponibilidad por las 6 sucursales.
+4. **Carrito** agrega productos (el carrito vive en el navegador) → "Carrito" → confirma datos y sucursal → "Continuar al pago".
+5. **Reserva**: al entrar al pago, el stock se reservó. Abre el catálogo en otra pestaña: el **disponible bajó** aunque aún no pagas.
+6. **Pago** tarjeta de prueba `4111 1111 1111 1111`, exp `12/29`, CVV `123` → "Pagar". La tarjeta animada refleja tus datos.
+7. **Éxito** página con confeti → "Descargar PDF". La existencia bajó de verdad.
+8. **Mi cuenta** → tu pedido aparece con estado "pagada".
+
+**Admin — http://localhost:8081** (servicio aparte, login propio)
+9. Entra con `admin@membrillo.gt` / `membrillo123`:
+   - **Dashboard**: métricas + gráfica de stock por sucursal + feed de ventas en vivo (SSE).
+   - **Inventario**: matriz editable (cambia un valor → se guarda solo).
+   - **Productos**: crea/edita/activa-desactiva (modal).
+   - **Pedidos**: revisa la factura recién creada y su detalle.
+   - **Usuarios**: aparece el cliente que registraste.
+10. **SSE en vivo**: abre la tienda (:8080) y el inventario admin (:8081) en dos pestañas. Una venta baja el **disponible** en la tienda y destella la celda del admin — **sin recargar**.
 
 ---
 
@@ -139,7 +170,7 @@ pip install requests   # solo la primera vez
 python scripts\simulate_sales.py --n 30 --delay 2
 ```
 
-El script genera 30 ventas con clientes aleatorios. Verás en pantalla los badges de stock bajando en vivo, con destello. **Esto es el factor wow**.
+El script pega directo a la **API** (`/api/checkout` → `/api/pago`) con la tarjeta de prueba. Con la tienda (:8080) o el inventario admin (:8081) abiertos, verás los badges de stock bajando en vivo, con destello. **Esto es el factor wow**.
 
 ---
 
@@ -173,13 +204,26 @@ Copia la URL `https://xxxx.ngrok-free.app` y compártela. Funciona desde cualqui
 
 ```
 membrillo_portal/
-  app/                FastAPI (rutas, ORM, CRUD, SSE, PDF, templates)
+  app/                API JSON (FastAPI) — :8000
+    main.py           endpoints /api/* (auth, catálogo, checkout, pago, admin, SSE)
+    models.py         ORM 10 tablas
+    crud.py           lógica: reservas, facturación, métricas, CRUD
+    auth.py           bcrypt + tokens (Bearer) + dependencias de rol
+    payments.py       validación Luhn + pasarela simulada
+    sse.py / pdf.py   broker SSE / factura PDF
+  web/                E-commerce estático (nginx) — :8080
+    index/producto/carrito/pago/compra-exitosa/login/registro/mi-cuenta.html
+    assets/           config.js + api.js + design system compartido
+  admin/              Panel admin estático (nginx) — :8081
+    index(dashboard)/inventario/productos/pedidos/pedido-detalle/usuarios/login.html
+    assets/           config.js + admin-api.js + admin-shell.js + design system
   sql/                schema + seed (auto-load por Docker)
-  scripts/            init_db.py (fallback) + simulate_sales.py (demo)
-  docker-compose.yml  MySQL + phpMyAdmin (+ app opcional)
-  Dockerfile          Imagen FastAPI
+  scripts/            init_db.py (fallback) + simulate_sales.py (usa la API)
+  docker-compose.yml  mysql + api + web + admin + phpMyAdmin
+  Dockerfile          Imagen de la API
   requirements.txt
-  .env.example
+  .env.example        DATABASE_URL, SECRET_KEY, ALLOWED_ORIGINS, ADMIN_EMAIL/PASSWORD
+  DESIGN_BRIEF_v2.md  brief para rediseño (Claude Design)
   presentacion.md     Outline de slides
   README.md           Doc técnica
 ```
@@ -207,7 +251,9 @@ Lee `membrillo_portal/presentacion.md` — trae el outline de slides ya armado:
 - [ ] Docker Desktop corriendo
 - [ ] `docker compose up -d` levantado y phpMyAdmin abre
 - [ ] `uvicorn` corriendo, http://localhost:8000 abre
-- [ ] Compraste un producto de prueba, factura PDF descargó
+- [ ] Registraste un cliente y entró su sesión
+- [ ] Compraste con la tarjeta de prueba, vi la reserva bajar el disponible, pago aprobado, factura PDF descargó
+- [ ] Login admin funciona y el panel (`/admin`) muestra dashboard, inventario, productos, pedidos, usuarios
 - [ ] SSE funciona (probaste con dos pestañas)
 - [ ] `simulate_sales.py` ejecuta sin errores
 - [ ] ngrok generado y URL copiada

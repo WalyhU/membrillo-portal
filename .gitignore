@@ -1,0 +1,17 @@
+# Artefactos y binarios pesados
+*.zip
+*.log
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# Datos / generados
+mysql_data/
+membrillo_portal/app/static/facturas/*.pdf
+!membrillo_portal/app/static/facturas/.gitkeep
+
+# Logs locales
+membrillo_portal/uvicorn.log
