@@ -58,6 +58,7 @@
   <div class="max-w-container mx-auto px-5 md:px-8 py-8 text-sm flex flex-wrap justify-between gap-4">
     <span class="font-display text-white text-lg">El Membrillo</span>
     <span>Hecho con cariño en Guatemala · 2026</span>
+    <span id="pod-label" class="font-mono text-xs px-2 py-1 rounded bg-black/30 text-gold/90" title="Pod/instancia que atiende la API">pod: …</span>
   </div>
 </footer>
 
@@ -96,7 +97,7 @@
     return '<article class="card fade-up bg-white rounded-2xl soft-shadow border border-outline-variant/30 overflow-hidden flex flex-col lift" data-tipo="' + p.tipo_nombre + '">' +
       '<a href="producto.html?id=' + p.id + '" class="block relative">' +
         '<div class="aspect-square bg-card-cream flex items-center justify-center overflow-hidden">' +
-          (p.imagen_url ? '<img src="' + p.imagen_url + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"/>' : '') +
+          (p.imagen_url ? '<img src="' + Mem.imgUrl(p.imagen_url) + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"/>' : '') +
           '<span class="material-symbols-outlined text-primary/25" style="font-size:54px">local_florist</span>' +
         '</div>' + badge +
       '</a>' +

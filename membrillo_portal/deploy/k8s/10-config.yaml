@@ -1,0 +1,23 @@
+# Credenciales y config de la app. Valores de demo (no usar tal cual en prod real).
+apiVersion: v1
+kind: Secret
+metadata:
+  name: membrillo-secrets
+  namespace: membrillo
+type: Opaque
+stringData:
+  MYSQL_ROOT_PASSWORD: membrillo
+  DATABASE_URL: mysql+pymysql://root:membrillo@mysql:3306/membrillo_db
+  SECRET_KEY: cambia-esto-en-produccion-membrillo-2026
+  ADMIN_EMAIL: admin@membrillo.gt
+  ADMIN_PASSWORD: membrillo123
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: membrillo-config
+  namespace: membrillo
+data:
+  MYSQL_DATABASE: membrillo_db
+  # Mismo origen via nginx proxy, pero dejamos origenes por si se accede directo.
+  ALLOWED_ORIGINS: "http://localhost,http://localhost:30080,http://localhost:30081"

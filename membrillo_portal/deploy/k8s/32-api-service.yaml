@@ -1,0 +1,31 @@
+# Service de PRODUCCION. El selector 'color' decide a que version (blue/green)
+# va el trafico. swap.ps1 cambia este selector -> Blue-Green sin downtime.
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: membrillo
+  labels: { app: api }
+spec:
+  selector:
+    app: api
+    color: blue          # <-- swap cambia esto a green
+  ports:
+    - port: 8000
+      targetPort: 8000
+---
+# Service de PRE-PRODUCCION/validacion: siempre apunta a green para probar la
+# nueva version antes del swap (kubectl port-forward svc/api-green-preview ...).
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-green-preview
+  namespace: membrillo
+  labels: { app: api }
+spec:
+  selector:
+    app: api
+    color: green
+  ports:
+    - port: 8000
+      targetPort: 8000

@@ -50,7 +50,7 @@
 
   box.innerHTML =
     '<div class="rounded-2xl overflow-hidden bg-card-cream aspect-square flex items-center justify-center soft-shadow">' +
-      (p.imagen_url ? '<img src="' + p.imagen_url + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"/>' : '') +
+      (p.imagen_url ? '<img src="' + Mem.imgUrl(p.imagen_url) + '" class="w-full h-full object-cover" onerror="this.style.display=\'none\'"/>' : '') +
       '<span class="material-symbols-outlined text-primary/25" style="font-size:90px">local_florist</span></div>' +
     '<div>' +
       '<span class="eyebrow text-text-muted">' + p.tipo_nombre + '</span>' +

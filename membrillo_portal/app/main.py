@@ -7,6 +7,7 @@ from typing import Optional
 
 from fastapi import FastAPI, Request, Depends, HTTPException, status
 from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sse_starlette.sse import EventSourceResponse
@@ -34,6 +35,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Imagenes de producto y assets estaticos servidos por la API
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 
 
 @app.on_event("startup")
@@ -413,3 +417,14 @@ async def stream_stock(request: Request):
 @app.get("/api/health")
 def health():
     return {"ok": True}
+
+
+# Identidad del pod/instancia que atiende la peticion (para demo Blue-Green en K8s)
+POD_NAME = os.getenv("POD_NAME") or os.getenv("HOSTNAME") or "local"
+APP_COLOR = os.getenv("APP_COLOR", "")
+APP_VERSION = os.getenv("APP_VERSION", "dev")
+
+
+@app.get("/api/info")
+def info():
+    return {"pod": POD_NAME, "color": APP_COLOR, "version": APP_VERSION}

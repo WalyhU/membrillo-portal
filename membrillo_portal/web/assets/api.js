@@ -2,7 +2,15 @@
    Requiere config.js cargado antes. Expone window.Mem. */
 (function () {
   const API = window.API_BASE || "http://localhost:8000/api";
+  const ORIGIN = API.replace(/\/api\/?$/, "");
   const TOKEN_KEY = "mem_token", USER_KEY = "mem_user", CART_KEY = "mem_cart";
+
+  // Resuelve rutas de imagen guardadas como /static/... a la URL absoluta de la API
+  function imgUrl(u) {
+    if (!u) return "";
+    if (/^https?:\/\//.test(u)) return u;
+    return ORIGIN + (u.charAt(0) === "/" ? u : "/" + u);
+  }
 
   // ---------- sesión ----------
   function getToken() { return localStorage.getItem(TOKEN_KEY); }
@@ -71,8 +79,23 @@
 
   document.addEventListener("DOMContentLoaded", updateBadges);
 
+  // ---------- info del pod (demo Blue-Green) ----------
+  // Rellena cualquier #pod-label con el nombre del pod/instancia que sirve la API.
+  async function showPod() {
+    const el = document.getElementById("pod-label");
+    if (!el) return;
+    try {
+      const r = await fetch(API + "/info");
+      const d = await r.json();
+      const color = d.color ? d.color.toUpperCase() : "";
+      el.textContent = "pod: " + d.pod + (color ? " · " + color : "") + " · v" + d.version;
+      if (d.color) el.dataset.color = d.color;
+    } catch { el.textContent = "pod: (sin conexión API)"; }
+  }
+  document.addEventListener("DOMContentLoaded", showPod);
+
   window.Mem = {
-    API, apiFetch, getToken, getUser, setSession, clearSession, logout, requireAuth,
+    API, ORIGIN, imgUrl, showPod, apiFetch, getToken, getUser, setSession, clearSession, logout, requireAuth,
     getCart, saveCart, cartCount, addToCart, setQty, removeFromCart, clearCart, updateBadges, money,
   };
 })();
