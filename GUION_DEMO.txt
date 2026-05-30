@@ -1,0 +1,121 @@
+========================================================
+ GUION DE LA DEMO EN VIVO  —  Proyecto Final
+ Deploy + Kubernetes + Blue-Green
+ (leelo de arriba a abajo el dia de la presentacion)
+========================================================
+
+Tip: ten 2 ventanas de PowerShell abiertas y el navegador en
+http://localhost:30080 listo. Todos los comandos se corren parado
+en la carpeta:  membrillo_portal\deploy
+
+
+--------------------------------------------------------
+0) ANTES DE EMPEZAR (preparas esto en tu casa, NO en vivo)
+--------------------------------------------------------
+
+# Prender Kubernetes:
+#   Docker Desktop -> Settings -> Kubernetes -> Enable -> esperar a que ponga verde.
+
+# Comprobar que kubectl ve el cluster:
+kubectl get nodes
+# -> "Decimos: aqui esta nuestro cluster de Kubernetes corriendo, listo."
+
+# Construir las imagenes (la app empaquetada en Docker):
+.\build-images.ps1
+# -> "Esto arma 3 cajas (imagenes): la API, la tienda y el admin.
+#     Las versiones v1 y v2 de la API son la misma, solo cambia color y version."
+
+# Desplegar todo al cluster:
+.\deploy.ps1
+# -> "Esto sube MySQL, las dos versiones de la API (blue y green) y los
+#     frontends. Produccion arranca apuntando a BLUE."
+
+
+--------------------------------------------------------
+1) AMBIENTE ACTUAL  (esto SI lo muestras en vivo)
+--------------------------------------------------------
+
+.\status.ps1
+# -> "Aqui se ve que produccion esta sirviendo el color BLUE,
+#     y todos los pods estan corriendo (Running)."
+
+# Abrir la tienda en el navegador:
+#   http://localhost:30080
+# -> "Miren el footer abajo: dice 'pod: api-blue-... · BLUE · v1.0'.
+#     Eso nos dice exactamente que version nos esta atendiendo."
+#  >>> CAPTURA 1: foto del footer en BLUE (evidencia 'antes del swap')
+
+
+--------------------------------------------------------
+2) VALIDAR LA VERSION NUEVA (GREEN) ANTES DE soltarla
+--------------------------------------------------------
+
+# En la SEGUNDA ventana de PowerShell:
+kubectl -n membrillo port-forward svc/api-green-preview 8090:8000
+# -> "Green ya esta corriendo, pero todavia NO recibe trafico real.
+#     Con esto le abrimos una puertita privada para probarla."
+
+# En el navegador, abrir:
+#   http://localhost:8090/api/info
+# -> "Responde color green, version 2.0. La probamos y funciona,
+#     sin que ningun cliente real la haya tocado."
+#  >>> CAPTURA 2: la respuesta green/v2.0 (evidencia 'staging/green')
+
+# (dejar el port-forward abierto; cerrarlo despues con Ctrl + C)
+
+
+--------------------------------------------------------
+3) EL SWAP  (el momento estrella: sin downtime)
+--------------------------------------------------------
+
+.\swap.ps1
+# -> "Esto cambia el interruptor: produccion deja de apuntar a blue
+#     y pasa a green. No apagamos nada, no hay caida. Solo redirigimos."
+#  >>> CAPTURA 3: los logs del swap (evidencia 'swap')
+
+
+--------------------------------------------------------
+4) RESULTADO  (se ve el cambio solito)
+--------------------------------------------------------
+
+# Recargar la tienda:  http://localhost:30080  (F5)
+# -> "El footer ahora dice 'pod: api-green-... · GREEN · v2.0'.
+#     Cambiamos la version de produccion en vivo y nadie se cayo."
+#  >>> CAPTURA 4: footer en GREEN (evidencia 'despues del swap')
+
+.\status.ps1
+# -> "Confirmamos: produccion ahora sirve GREEN."
+
+
+--------------------------------------------------------
+5) ROLLBACK  (por si algo sale mal, se vuelve al toque)
+--------------------------------------------------------
+
+.\swap.ps1 -To blue
+# -> "Si la version nueva diera problemas, regresamos a blue en segundos.
+#     Esa es la gracia del Blue-Green: red de seguridad inmediata."
+
+
+--------------------------------------------------------
+COMANDOS DE APOYO (por si preguntan o algo falla)
+--------------------------------------------------------
+
+# Ver los pods con detalle:
+kubectl -n membrillo get pods -o wide
+
+# Ver los logs de un pod (cambiar el nombre por uno real):
+kubectl -n membrillo logs <nombre-del-pod>
+
+# Ver a que color apunta produccion ahora mismo:
+kubectl -n membrillo get svc api -o jsonpath="{.spec.selector.color}"
+
+# Borrar TODO al terminar la demo (limpia el cluster):
+kubectl delete namespace membrillo
+
+
+--------------------------------------------------------
+RESUMEN DE 1 LINEA (para cerrar)
+--------------------------------------------------------
+"Empaquetamos con Docker, orquestamos con Kubernetes, y actualizamos
+ produccion sin downtime con Blue-Green. El footer fue nuestra prueba
+ visual de que el cambio paso de verdad."
