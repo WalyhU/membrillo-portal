@@ -20,9 +20,65 @@ Nunca trabajes ni subas directo a `main` ni a `develop`. Usá una rama `feature/
 | `main` | Producción. **No tocar directo.** |
 | `develop` | Integración. De aquí nacen las features. **No tocar directo.** |
 | `pruebas` | Experimentos / probar cosas sin miedo. |
-| `feature/tarea-1`, `feature/tarea-2`, `feature/tarea-3` | Trabajo de cada quien. **Aquí SÍ trabajás.** |
+| `feature/tarea-1` … `feature/tarea-4` | Trabajo de cada persona (1 a 4). **Aquí SÍ trabajás.** |
 
 Si necesitás una rama nueva, se crea **siempre desde `develop`**.
+
+---
+
+## ⚡ Lo primero: ¿qué persona sos?
+
+El usuario te dirá algo como **"soy la persona 1"**. Con ese número:
+
+1. Buscá tu fila en la tabla **"Asignación por persona"** de abajo.
+2. Trabajá **solo** en tu rama `feature/tarea-N` (N = tu número).
+3. Hacé **solo** lo que dice tu asignación. No toques el trabajo de las otras personas.
+
+Si el usuario no dijo número, **preguntáselo** antes de empezar.
+
+---
+
+## Asignación por persona
+
+> Cada persona trabaja en SU rama, hace commits pequeños y abre un PR hacia `develop`.
+> El código del sistema ya está hecho: estas tareas son los **entregables del proyecto final**
+> (documentación y evidencias), no reescribir la app.
+
+### Persona 1 — Documentación del sistema (Fase 1)
+- **Rama:** `feature/tarea-1`
+- **Objetivo:** Documentar el análisis del sistema.
+- **Crear archivo:** `docs/01-requerimientos.md` con:
+  - Descripción del sistema (qué es el portal El Membrillo, 1 párrafo).
+  - Requerimientos funcionales (mínimo 5).
+  - Requerimientos no funcionales (mínimo 2).
+  - Historias de usuario (mínimo 2, formato "Como… quiero… para…").
+- **Hecho cuando:** el archivo existe, está completo y hay PR a `develop`.
+
+### Persona 2 — Evidencias de CI/CD (Fase 3)
+- **Rama:** `feature/tarea-2`
+- **Objetivo:** Documentar el pipeline de GitHub Actions.
+- **Crear archivo:** `docs/02-cicd.md` con:
+  - Explicación de qué hace `.github/workflows/ci.yml` (jobs backend-check y docker-build).
+  - Cómo se dispara (push / pull request).
+  - Espacio para pegar capturas: pipeline en verde + logs de ejecución (guardar imágenes en `docs/img/`).
+- **Hecho cuando:** el archivo explica el pipeline, tiene las capturas, y hay PR a `develop`.
+
+### Persona 3 — Evidencias de Blue-Green (Fase 4)
+- **Rama:** `feature/tarea-3`
+- **Objetivo:** Documentar el deployment Blue-Green con sus capturas.
+- **Crear archivo:** `docs/03-blue-green.md` con:
+  - Explicación breve del proceso (blue = producción, green = nueva versión, swap del Service).
+  - Las 4 evidencias en orden: captura ANTES del swap (footer BLUE), captura GREEN (validación), captura del swap (logs), captura DESPUÉS (footer GREEN). Imágenes en `docs/img/`.
+  - Comandos usados (`./status.ps1`, `./swap.ps1`).
+- **Hecho cuando:** el archivo tiene la explicación + las 4 capturas, y hay PR a `develop`.
+
+### Persona 4 — Presentación final
+- **Rama:** `feature/tarea-4`
+- **Objetivo:** Generar la presentación `.pptx` y el guion de la demo.
+- **Tareas:**
+  - Usar el prompt de `PROMPT_PPTX_Deploy.md` para generar `Presentacion_ProyectoFinal_Deploy.pptx`.
+  - Crear `docs/04-guion-presentacion.md`: quién dice qué en cada slide (15-20 min) y el orden de la demo en vivo.
+- **Hecho cuando:** existe el `.pptx`, existe el guion, y hay PR a `develop`.
 
 ---
 
@@ -165,8 +221,10 @@ git push -u origin feature/tarea-1
 
 ## Prompt listo para pegarle al agente
 
+> Soy la **persona N** (reemplazá N por tu número). Buscá la tarea de la persona N en
+> la sección "Asignación por persona" y hacé SOLO eso, en la rama `feature/tarea-N`.
 > Trabajá en el repo El Membrillo Portal. Hacé commits pequeños: 1 cambio = 1 commit.
-> Nunca toques `main` ni `develop` directo; trabajá en una rama `feature/...`.
+> Nunca toques `main` ni `develop` directo; trabajá en tu rama `feature/tarea-N`.
 > Mensajes de commit en formato `tipo: descripción corta` (feat, fix, docs, style,
 > refactor, test, chore), en minúsculas y sin punto final. Después de cada cambio:
 > `git add -A`, `git commit -m "..."`, y `git push -u origin <mi-rama-feature>`.
