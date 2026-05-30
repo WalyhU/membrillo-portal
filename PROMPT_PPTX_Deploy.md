@@ -1,7 +1,7 @@
 # Prompt para generar la presentación PowerPoint — Proyecto Final (Deploy + Kubernetes + CI/CD + Blue-Green)
 
-> Pega TODO el contenido del bloque siguiente (entre los `===`) en ChatGPT o Claude y pídele:
-> *"Genera un archivo .pptx con python-pptx siguiendo exactamente esta especificación."*
+> Pega TODO el contenido del bloque siguiente (entre los `===`) a un agente que **ya tiene una skill de PowerPoint** (p. ej. Cowork) y pídele:
+> *"Usa tu skill de PowerPoint para crear esta presentación siguiendo exactamente esta especificación."*
 >
 > El prompt está auto-contenido. El protagonista es el **proceso moderno de Ingeniería de Software**: contenedores, Kubernetes, CI/CD y deployment Blue-Green. El portal "El Membrillo" aparece solo como la aplicación que se despliega — NO es el centro de la presentación.
 
@@ -14,10 +14,10 @@ Tema central: DEPLOYMENT, KUBERNETES, CI/CD y BLUE-GREEN
 ================================================================
 
 ROL
-Eres un ingeniero DevOps presentando ante un catedrático y compañeros el proyecto final de Ingeniería de Software. El objetivo del proyecto NO es el tamaño del sistema, sino DEMOSTRAR COMPRENSIÓN DEL CICLO MODERNO DE DESARROLLO: análisis, desarrollo, control de versiones, automatización (CI/CD), deployment y trabajo colaborativo. La aplicación de ejemplo es un portal e-commerce ("El Membrillo"), pero la presentación se centra en CÓMO se construye, integra y despliega, no en el negocio del portal.
+Eres un diseñador de presentaciones técnicas. Tienes una skill de PowerPoint: úsala para CONSTRUIR el archivo .pptx directamente (no escribas código a mano salvo lo que tu skill requiera internamente). Presentas el proyecto final de Ingeniería de Software ante un catedrático y compañeros. El objetivo NO es el tamaño del sistema, sino DEMOSTRAR COMPRENSIÓN DEL CICLO MODERNO DE DESARROLLO: análisis, desarrollo, control de versiones, automatización (CI/CD), deployment y trabajo colaborativo. La aplicación de ejemplo es un portal e-commerce ("El Membrillo"), pero la presentación se centra en CÓMO se construye, integra y despliega, no en el negocio del portal.
 
 ENTREGABLE
-Un único script en Python usando python-pptx que produzca el archivo "Presentacion_ProyectoFinal_Deploy.pptx". El script debe ser ejecutable de extremo a extremo: incluye todos los imports, la creación de la presentación, cada slide con TODOS los textos literalmente como aparecen abajo, los diagramas como cajas/flechas, y el guardado del archivo.
+Usa tu skill de PowerPoint para generar el archivo "Presentacion_ProyectoFinal_Deploy.pptx" con las 14 slides especificadas abajo. Respeta el estilo visual, los textos literales y los diagramas. El resultado final es el archivo .pptx listo para abrir y presentar.
 
 ================================================================
 1) CONTEXTO MÍNIMO (para que internalices el proyecto)
@@ -248,24 +248,21 @@ SLIDE 14 — CIERRE
 - Pie: "Gracias.  ·  Preguntas y respuestas."
 
 ================================================================
-5) INSTRUCCIONES TÉCNICAS PARA EL CÓDIGO
+5) INSTRUCCIONES DE CONSTRUCCIÓN (CON TU SKILL DE POWERPOINT)
 ================================================================
-- Usa python-pptx.
-- Tamaño de slide: 13.333 x 7.5 pulgadas (16:9 widescreen).
-- Crea funciones auxiliares para: (a) footer izquierdo + número de slide, (b) barra azul bajo el título, (c) cards con borde de color y título grande, (d) tablas con estilo definido (encabezado azul, filas alternas #F1F5F9), (e) cajas de diagrama con flechas, (f) bloques de código monospace (Consolas, fondo #F1F5F9).
-- Para los elementos BLUE usar color #2563EB; para GREEN usar #16A34A.
-- Coloca todos los textos literalmente como aparecen arriba (no parafrasear, no resumir).
-- Los diagramas pueden representarse con autoshapes rectangulares + conectores/flechas; si es complejo, usar cajas de texto alineadas y flechas simples.
-- Al final del script guarda el archivo como "Presentacion_ProyectoFinal_Deploy.pptx" e imprime una línea de confirmación.
-- No incluyas dependencias adicionales más allá de python-pptx.
+- Construí el .pptx con tu skill de PowerPoint; no entregues solo un guion.
+- Relación de aspecto 16:9 (widescreen).
+- Aplicá consistencia en TODAS las slides: footer izquierdo + número de slide, barra azul bajo el título.
+- Usá los componentes visuales descritos: cards con borde de color y título grande, tablas (encabezado azul, filas alternas #F1F5F9), cajas de diagrama con flechas, bloques de código monospace (Consolas, fondo #F1F5F9).
+- Para elementos BLUE usar #2563EB; para GREEN usar #16A34A.
+- Colocá todos los textos literalmente como aparecen arriba (no parafrasear, no resumir).
+- Los diagramas: cajas rectangulares con borde de color + flechas; si tu skill no soporta conectores, usá cajas alineadas con flechas simples o caracteres "→".
+- Si algún recurso no es soportado por tu skill, elegí la alternativa más cercana que mantenga el estilo, sin omitir contenido.
 
 ================================================================
 6) FORMATO DE TU RESPUESTA
 ================================================================
-Devuélveme únicamente el script Python completo en un solo bloque de código, listo para ejecutar con:
-    pip install python-pptx
-    python generar_pptx_deploy.py
-No agregues explicaciones extra antes ni después del bloque de código.
+Generá el archivo "Presentacion_ProyectoFinal_Deploy.pptx" con tu skill de PowerPoint y entregalo. Al final, listá brevemente el título de las 14 slides para confirmar que están todas. No pidas confirmación intermedia: construí la presentación completa de una sola vez.
 
 ================================================================
 FIN DEL PROMPT
@@ -276,16 +273,11 @@ FIN DEL PROMPT
 
 ## Cómo usar este prompt
 
-1. Abre ChatGPT o Claude.
+1. Abre un agente con skill de PowerPoint (p. ej. Cowork).
 2. Copia el bloque entre los `===` de arriba (desde "ROL" hasta "FIN DEL PROMPT").
-3. Pégalo y envíalo.
-4. La IA devuelve un script Python.
-5. Guárdalo como `generar_pptx_deploy.py` y ejecuta:
-   ```powershell
-   pip install python-pptx
-   python generar_pptx_deploy.py
-   ```
-6. Abre `Presentacion_ProyectoFinal_Deploy.pptx`, repasa y pule en PowerPoint si querés.
+3. Pégalo y pedile: "Usa tu skill de PowerPoint para crear esta presentación".
+4. El agente construye y entrega `Presentacion_ProyectoFinal_Deploy.pptx`.
+5. Abre el archivo, repasa y pule en PowerPoint si querés.
 
 ## Notas
 
